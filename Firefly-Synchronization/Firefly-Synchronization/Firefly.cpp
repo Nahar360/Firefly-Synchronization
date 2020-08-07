@@ -9,16 +9,24 @@ CFirefly::CFirefly(int id) :
 	m_font.loadFromFile("E:/Projects/Firefly-Synchronization/Firefly-Synchronization/Firefly-Synchronization/arial.ttf");
 }
 
-void CFirefly::Init()
+void CFirefly::Init(float posX, float posY)
 {
 	// Firefly
 	m_firefly.setRadius(50.0f);
 	m_firefly.setPointCount(6);
-	m_firefly.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
+	m_originalColor = sf::Color(255, 0, 0);
+	m_firefly.setFillColor(m_originalColor);
 	m_firefly.setOutlineThickness(2.5f);
 	sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
 	m_firefly.setOutlineColor(decoColor);
-	m_firefly.setPosition(rand() % WINDOW_WIDTH, rand() % WINDOW_HEIGHT);
+	if (posX == 0.0f && posY == 0.0f)
+	{
+		m_firefly.setPosition(125 * m_id, 125);
+	}
+	else
+	{
+		m_firefly.setPosition(posX, posY);
+	}
 	m_firefly.setOrigin(m_firefly.getRadius(), m_firefly.getRadius());
 	m_firefly.setRotation(90.0f);
 
@@ -29,22 +37,20 @@ void CFirefly::Init()
 	m_center.setOrigin(m_center.getRadius(), m_center.getRadius());
 
 	// Vertices
-	if (m_debugShowVertices)
+	for (int i = 0; i < m_firefly.getPointCount(); i++)
 	{
-		for (int i = 0; i < m_firefly.getPointCount(); i++)
-		{
-			sf::CircleShape vertex;
-			vertex.setRadius(5.0f);
-			vertex.setFillColor(sf::Color::Red);
-			m_vertices.push_back(vertex);
-		}
-
-		SetVertices(m_firefly.getPosition());
+		sf::CircleShape vertex;
+		vertex.setRadius(5.0f);
+		vertex.setFillColor(decoColor);
+		m_vertices.push_back(vertex);
 	}
 
+	SetVertices(m_firefly.getPosition());
+
+	// Text
 	m_idText.setString(std::to_string(GetId()));
 	m_idText.setCharacterSize(24);
-	m_idText.setFillColor(sf::Color::White);
+	m_idText.setFillColor(sf::Color::Black);
 	m_idText.setStyle(sf::Text::Bold);
 	m_idText.setPosition(m_firefly.getPosition().x, m_firefly.getPosition().y - 37.5f);
 	m_idText.setOrigin(m_center.getRadius(), m_center.getRadius());
@@ -94,7 +100,7 @@ void CFirefly::Update(sf::RenderWindow& window)
 	window.draw(m_firefly);
 	window.draw(m_center);
 
-	if (m_debugShowVertices)
+	if (m_showVertices)
 	{
 		for (int i = 0; i < m_vertices.size(); i++)
 		{
@@ -105,42 +111,71 @@ void CFirefly::Update(sf::RenderWindow& window)
 	m_idText.setFont(m_font);
 	window.draw(m_idText);
 
-	float time = m_clock.getElapsedTime().asSeconds();
-	if (time > 2.0f)
-	{
-		m_firefly.setFillColor(sf::Color(rand() % 255, rand() % 255, rand() % 255));
-		sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
-		m_firefly.setOutlineColor(decoColor);
-		m_center.setFillColor(decoColor);
+	BlinkEffect();
+}
 
-		m_clock.restart();
+void CFirefly::BlinkEffect()
+{
+	float time = m_clock.getElapsedTime().asSeconds();
+	if (time > m_blinkingRate)
+	{
+		// Blink
+		m_firefly.setFillColor(sf::Color::Yellow);
+		m_firefly.setOutlineColor(sf::Color::Black);
+		m_center.setFillColor(sf::Color::Black);
+
+		// Back to original color
+		if (time > m_blinkingRate + m_blinkingDuration)
+		{
+			m_firefly.setFillColor(m_originalColor);
+			sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
+			m_firefly.setOutlineColor(decoColor);
+			m_center.setFillColor(decoColor);
+
+			m_clock.restart();
+		}
 	}
 }
 
 void CFirefly::UpdatePosition(float x, float y)
 {
-	m_firefly.setPosition(x, y);
-
-	m_center.setPosition(x, y);
-
-	if (m_debugShowVertices)
+	// Boundaries detection
+	if (x >= 0 + m_firefly.getRadius() && x <= WINDOW_WIDTH - m_firefly.getRadius() &&
+		y >= 0 + m_firefly.getRadius() && y <= WINDOW_HEIGHT - m_firefly.getRadius())
 	{
-		SetVertices(sf::Vector2f(x, y));
-	}
+		m_firefly.setPosition(x, y);
 
-	m_idText.setPosition(x, y - 37.5f);
+		m_center.setPosition(x, y);
+
+		SetVertices(sf::Vector2f(x, y));
+
+		m_idText.setPosition(x, y - 37.5f);
+	}
 }
 
 void CFirefly::UpdateRotation()
 {
 	m_firefly.setRotation(m_firefly.getRotation() + 0.1f);
 
-	if (m_debugShowVertices)
+	for (int i = 0; i < m_vertices.size(); i++)
 	{
-		for (int i = 0; i < m_vertices.size(); i++)
-		{
-			m_vertices[i].setRotation(m_vertices[i].getRotation() + 0.1f);
-		}
+		m_vertices[i].setRotation(m_vertices[i].getRotation() + 0.1f);
+	}
+}
+
+void CFirefly::UpdateColor(sf::Color color)
+{
+	m_originalColor = color;
+
+	m_firefly.setFillColor(m_originalColor);
+
+	sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
+	m_firefly.setOutlineColor(decoColor);
+	m_center.setFillColor(decoColor);
+
+	for (int i = 0; i < m_vertices.size(); i++)
+	{
+		m_vertices[i].setFillColor(decoColor);
 	}
 }
 
@@ -177,7 +212,7 @@ sf::CircleShape CFirefly::GetFirefly() const
 
 sf::Color CFirefly::GetColor() const
 {
-	return m_firefly.getFillColor();
+	return m_originalColor;
 }
 
 int CFirefly::GetId() const
@@ -198,4 +233,38 @@ void CFirefly::SetClosestFirefly(const int& closestFirefly)
 int CFirefly::GetClosestFirefly() const
 {
 	return m_closestFirefly;
+}
+
+void CFirefly::SetSelected(const bool& selected)
+{
+	m_selected = selected;
+}
+
+bool CFirefly::GetSelected() const
+{
+	return m_selected;
+}
+
+void CFirefly::SetBlinkingRate(const float& blinkingRate)
+{
+	m_blinkingRate = blinkingRate;
+
+	m_clock.restart();
+}
+
+void CFirefly::SetBlinkingDuration(const float& blinkingDuration)
+{
+	m_blinkingDuration = blinkingDuration;
+
+	m_clock.restart();
+}
+
+void CFirefly::ResetBlinking()
+{
+	m_clock.restart();
+}
+
+void CFirefly::SetShowVertices(const bool& show)
+{
+	m_showVertices = show;
 }
