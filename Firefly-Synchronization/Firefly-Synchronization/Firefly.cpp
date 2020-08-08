@@ -21,7 +21,14 @@ void CFirefly::Init(float posX, float posY)
 	m_firefly.setOutlineColor(decoColor);
 	if (posX == 0.0f && posY == 0.0f)
 	{
-		m_firefly.setPosition(125 * m_id, 125);
+		int row = 1;
+		int col = m_id;
+		while (col > 5)
+		{
+			col -= 5;
+			row++;
+		}
+		m_firefly.setPosition(125 * col, 125 * row);
 	}
 	else
 	{

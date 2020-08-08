@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 
+#pragma once
+
 class CFirefly
 {
 public:

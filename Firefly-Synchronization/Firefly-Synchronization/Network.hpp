@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#pragma once
+
 class CNetwork
 {
 public:
