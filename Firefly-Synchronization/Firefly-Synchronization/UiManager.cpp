@@ -218,11 +218,12 @@ void CUiManager::ListFireflies(CNetwork& network)
 	{
 		if (fireflies[i].GetSelected())
 		{
-			ImGui::TextColored(ImVec4(0, 1, 0, 1), "[%d] - Position: (%.0f, %.0f)", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y);
+			ImGui::TextColored(ImVec4(0, 1, 0, 1),
+				"---> [%d] - Position: (%.0f, %.0f). Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetClosestFirefly());
 		}
 		else
 		{
-			ImGui::Text("[%d] - Position: (%.0f, %.0f)", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y);
+			ImGui::Text("[%d] - Position: (%.0f, %.0f). Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetClosestFirefly());
 		}
 	}
 	ImGui::EndChild();

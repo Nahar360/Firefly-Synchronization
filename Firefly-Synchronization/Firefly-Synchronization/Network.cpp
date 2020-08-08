@@ -79,16 +79,6 @@ void CNetwork::Scan()
 	}
 }
 
-void CNetwork::Test()
-{
-	for (int i = 0; i < m_fireflies.size(); i++)
-	{
-		std::cout << "Firefly: " << m_fireflies[i].GetId() << ". Closest: " << m_fireflies[i].GetClosestFirefly() << std::endl;
-	}
-
-	std::cout << std::endl;
-}
-
 void CNetwork::UpdateFirefliesColor(sf::Color color)
 {
 	for (int i = 0; i < m_fireflies.size(); i++)

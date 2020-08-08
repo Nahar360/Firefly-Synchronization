@@ -43,11 +43,6 @@ void CGame::CheckEvents()
 		{
 			m_window.close();
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		{
-			m_network.Test();
-		}
 	}
 }
 

@@ -15,8 +15,6 @@ public:
 	void Scan();
 	void MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos);
 
-	void Test();
-
 	void UpdateFirefliesColor(sf::Color color);
 
 	void UpdateFirefliesBlinkingRate(float blinkingRate);
