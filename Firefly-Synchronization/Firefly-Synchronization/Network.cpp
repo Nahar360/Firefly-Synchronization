@@ -37,10 +37,22 @@ void CNetwork::Update(sf::RenderWindow& window)
 		std::vector<sf::Vertex> lines;
 		for (int i = 0; i < m_fireflies.size(); i++)
 		{
+			std::vector<int> neighbours = m_fireflies[i].GetNeighbours();
 			for (int j = 1; j < m_fireflies.size(); j++)
 			{
-				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::White));
-				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::White));
+				const bool isNeighbour = (std::find(neighbours.begin(), neighbours.end(), m_fireflies[j].GetId()) != neighbours.end());
+				sf::Color lineColor = sf::Color::White;
+				if (isNeighbour)
+				{
+					lineColor = sf::Color::Green;
+				}
+				else
+				{
+					lineColor = sf::Color::Red;
+				}
+
+				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), lineColor));
+				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), lineColor));
 			}
 		}
 
