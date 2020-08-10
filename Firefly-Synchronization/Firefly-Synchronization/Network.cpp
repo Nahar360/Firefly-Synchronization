@@ -39,8 +39,8 @@ void CNetwork::Update(sf::RenderWindow& window)
 		{
 			for (int j = 1; j < m_fireflies.size(); j++)
 			{
-				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y)));
-				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y)));
+				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::White));
+				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::White));
 			}
 		}
 
@@ -90,7 +90,7 @@ void CNetwork::Scan()
 			{
 				// TODO:
 				// m_fireflies[i].GetInfluenceRadius() does the job for now,
-				// because all influence radii are the same
+				// because all influence radii are the same.
 				// I should loop all the rest of the fireflies here as well
 				if (distancesToOtherFireflies[j].second <= m_fireflies[i].GetInfluenceRadius())
 				{
@@ -131,6 +131,7 @@ void CNetwork::CreateFirefly()
 {
 	CFirefly firefly(m_fireflies.size() + 1);
 	firefly.Init(50.0f, 150.0f, 75.0f, 75.0f); // default position, top left corner
+
 	m_fireflies.push_back(firefly);
 }
 
