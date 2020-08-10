@@ -35,7 +35,6 @@ private:
 	bool m_showLines = false;
 	bool m_showVertices = false;
 
-	float m_blinkingRate = 2.0f;
 	float m_blinkingDuration = 0.1f;
 
 	void Update(sf::RenderWindow& window);
@@ -50,7 +49,6 @@ private:
 	void UpdateFirefliesColor(CNetwork& network);
 	void UpdateShowLines(CNetwork& network);
 	void UpdateShowVertices(CNetwork& network);
-	void UpdateBlinkingRate(CNetwork& network);
 	void UpdateBlinkingDuration(CNetwork& network);
 	void ResetBlinkingClock(CNetwork& network);
 	void CreateFirefly(CNetwork& network);

@@ -33,6 +33,8 @@ public:
 	bool GetSelected() const;
 
 	void SetBlinkingRate(const float& blinkingRate);
+	float GetBlinkingRate() const;
+
 	void SetBlinkingDuration(const float& blinkingDuration);
 	void ResetBlinking();
 

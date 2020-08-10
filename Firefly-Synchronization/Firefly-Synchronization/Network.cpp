@@ -14,6 +14,11 @@ void CNetwork::Init(const int& numFireflies)
 		CFirefly firefly(i + 1);
 		firefly.Init();
 
+		const float minRate = 1.0f;
+		const float maxRate = 5.0f;
+		float blinkingRate = minRate + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (maxRate - minRate)));
+		firefly.SetBlinkingRate(blinkingRate);
+
 		m_fireflies.push_back(firefly);
 	}
 }
@@ -84,14 +89,6 @@ void CNetwork::UpdateFirefliesColor(sf::Color color)
 	for (int i = 0; i < m_fireflies.size(); i++)
 	{
 		m_fireflies[i].UpdateColor(color);
-	}
-}
-
-void CNetwork::UpdateFirefliesBlinkingRate(float blinkingRate)
-{
-	for (int i = 0; i < m_fireflies.size(); i++)
-	{
-		m_fireflies[i].SetBlinkingRate(blinkingRate);
 	}
 }
 

@@ -67,8 +67,6 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 
 	ImGui::Separator();
 
-	UpdateBlinkingRate(network);
-
 	UpdateBlinkingDuration(network);
 
 	ResetBlinkingClock(network);
@@ -168,14 +166,6 @@ void CUiManager::UpdateShowVertices(CNetwork& network)
 	}
 }
 
-void CUiManager::UpdateBlinkingRate(CNetwork& network)
-{
-	if (ImGui::InputFloat("Blinking rate (s)", &m_blinkingRate, 0.005f, 0.005f, "%.2f"))
-	{
-		network.UpdateFirefliesBlinkingRate(m_blinkingRate);
-	}
-}
-
 void CUiManager::UpdateBlinkingDuration(CNetwork& network)
 {
 	if (ImGui::InputFloat("Blinking duration (s)", &m_blinkingDuration, 0.001f, 0.001f, "%.2f"))
@@ -219,11 +209,11 @@ void CUiManager::ListFireflies(CNetwork& network)
 		if (fireflies[i].GetSelected())
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 1),
-				"---> [%d] - Position: (%.0f, %.0f). Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetClosestFirefly());
+				"---> [%d] - Position: (%.0f, %.0f). Blinking rate: %0.1f s. Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
 		}
 		else
 		{
-			ImGui::Text("[%d] - Position: (%.0f, %.0f). Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetClosestFirefly());
+			ImGui::Text("[%d] - Position: (%.0f, %.0f). Blinking rate: %0.1f s. Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
 		}
 	}
 	ImGui::EndChild();

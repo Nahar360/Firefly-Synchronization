@@ -17,7 +17,6 @@ public:
 
 	void UpdateFirefliesColor(sf::Color color);
 
-	void UpdateFirefliesBlinkingRate(float blinkingRate);
 	void UpdateFirefliesBlinkingDuration(float blinkingDuration);
 	void ResetBlinkingClock();
 

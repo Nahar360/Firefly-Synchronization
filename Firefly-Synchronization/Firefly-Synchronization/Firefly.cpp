@@ -259,6 +259,11 @@ void CFirefly::SetBlinkingRate(const float& blinkingRate)
 	m_clock.restart();
 }
 
+float CFirefly::GetBlinkingRate() const
+{
+	return m_blinkingRate;
+}
+
 void CFirefly::SetBlinkingDuration(const float& blinkingDuration)
 {
 	m_blinkingDuration = blinkingDuration;
