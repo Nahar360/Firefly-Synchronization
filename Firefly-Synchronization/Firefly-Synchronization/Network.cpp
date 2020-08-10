@@ -32,30 +32,7 @@ void CNetwork::Update(sf::RenderWindow& window)
 		m_fireflies[i].Update(window);
 	}
 
-	if (m_showLinesOption != 0)
-	{
-		std::vector<sf::Vertex> lines;
-		for (int i = 0; i < m_fireflies.size(); i++)
-		{
-			std::vector<int> neighbours = m_fireflies[i].GetNeighbours();
-			for (int j = 1; j < m_fireflies.size(); j++)
-			{
-				const bool isNeighbour = (std::find(neighbours.begin(), neighbours.end(), m_fireflies[j].GetId()) != neighbours.end());
-				if (isNeighbour)
-				{
-					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Green));
-					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Green));
-				}
-				else if (m_showLinesOption == 1)
-				{
-					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Red));
-					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Red));
-				}
-			}
-		}
-
-		window.draw(&lines[0], lines.size(), sf::Lines);
-	}
+	ShowLines(window);
 }
 
 void CNetwork::Scan()
@@ -110,6 +87,34 @@ void CNetwork::Scan()
 
 			m_fireflies[i].SetNeighbours(neighbours);
 		}
+	}
+}
+
+void CNetwork::ShowLines(sf::RenderWindow& window)
+{
+	if (m_showLinesOption != 0)
+	{
+		std::vector<sf::Vertex> lines;
+		for (int i = 0; i < m_fireflies.size(); i++)
+		{
+			std::vector<int> neighbours = m_fireflies[i].GetNeighbours();
+			for (int j = 1; j < m_fireflies.size(); j++)
+			{
+				const bool isNeighbour = (std::find(neighbours.begin(), neighbours.end(), m_fireflies[j].GetId()) != neighbours.end());
+				if (isNeighbour)
+				{
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Green));
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Green));
+				}
+				else if (m_showLinesOption == 1)
+				{
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Red));
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Red));
+				}
+			}
+		}
+
+		window.draw(&lines[0], lines.size(), sf::Lines);
 	}
 }
 

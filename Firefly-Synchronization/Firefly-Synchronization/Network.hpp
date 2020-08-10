@@ -34,5 +34,7 @@ private:
 	std::vector<CFirefly> m_fireflies;
 
 	int m_showLinesOption = 0;
+
+	void ShowLines(sf::RenderWindow& window);
 };
 
