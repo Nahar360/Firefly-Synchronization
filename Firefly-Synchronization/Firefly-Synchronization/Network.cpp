@@ -32,7 +32,7 @@ void CNetwork::Update(sf::RenderWindow& window)
 		m_fireflies[i].Update(window);
 	}
 
-	if (m_showLines)
+	if (m_showLinesOption != 0)
 	{
 		std::vector<sf::Vertex> lines;
 		for (int i = 0; i < m_fireflies.size(); i++)
@@ -41,18 +41,16 @@ void CNetwork::Update(sf::RenderWindow& window)
 			for (int j = 1; j < m_fireflies.size(); j++)
 			{
 				const bool isNeighbour = (std::find(neighbours.begin(), neighbours.end(), m_fireflies[j].GetId()) != neighbours.end());
-				sf::Color lineColor = sf::Color::White;
 				if (isNeighbour)
 				{
-					lineColor = sf::Color::Green;
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Green));
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Green));
 				}
-				else
+				else if (m_showLinesOption == 1)
 				{
-					lineColor = sf::Color::Red;
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Red));
+					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Red));
 				}
-
-				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), lineColor));
-				lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), lineColor));
 			}
 		}
 
@@ -182,9 +180,9 @@ std::vector<CFirefly> CNetwork::GetFireflies() const
 	return m_fireflies;
 }
 
-void CNetwork::ShowLines(const bool& show)
+void CNetwork::SetShowLinesOption(const int& option)
 {
-	m_showLines = show;
+	m_showLinesOption = option;
 }
 
 void CNetwork::ShowInfluenceRadius(const bool& show)

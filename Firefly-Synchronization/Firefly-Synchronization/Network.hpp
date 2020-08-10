@@ -26,13 +26,13 @@ public:
 
 	std::vector<CFirefly> GetFireflies() const;
 
-	void ShowLines(const bool& show);
+	void SetShowLinesOption(const int& option);
 	void ShowInfluenceRadius(const bool& show);
 	void ShowVertices(const bool& show);
 
 private:
 	std::vector<CFirefly> m_fireflies;
 
-	bool m_showLines = false;
+	int m_showLinesOption = 0;
 };
 

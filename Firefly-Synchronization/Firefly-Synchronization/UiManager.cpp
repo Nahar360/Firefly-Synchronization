@@ -51,29 +51,37 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 
 	UpdateMousePosition(window);
 
+	// -------------------------
 	ImGui::Separator();
+	// -------------------------
 
 	InitialiseNetwork(network);
 
+	// -------------------------
 	ImGui::Separator();
+	// -------------------------
 
 	UpdateBackgroundColor();
 
 	UpdateFirefliesColor(network);
 
 	UpdateShowLines(network);
-	ImGui::SameLine();
+	
 	UpdateShowInfluenceRadius(network);
 	ImGui::SameLine();
 	UpdateShowVertices(network);
 
+	// -------------------------
 	ImGui::Separator();
+	// -------------------------
 
 	UpdateBlinkingDuration(network);
 
 	ResetBlinkingClock(network);
 
+	// -------------------------
 	ImGui::Separator();
+	// -------------------------
 
 	CreateFirefly(network);
 	ImGui::SameLine();
@@ -160,9 +168,12 @@ void CUiManager::UpdateFirefliesColor(CNetwork& network)
 
 void CUiManager::UpdateShowLines(CNetwork& network)
 {
-	if (ImGui::Checkbox("Show Lines", &m_showLines))
+	const char* showLinesOptions[] = { "None", "All", "Only neighbours" };
+	static int showLinesOptionSelected = 0;
+	
+	if (ImGui::Combo("Show Lines", &showLinesOptionSelected, showLinesOptions, IM_ARRAYSIZE(showLinesOptions)))
 	{
-		network.ShowLines(m_showLines);
+		network.SetShowLinesOption(showLinesOptionSelected);
 	}
 }
 
