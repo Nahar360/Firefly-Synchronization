@@ -6,7 +6,7 @@ CFirefly::CFirefly(int id) :
 	m_id(id),
 	m_closestFirefly(-1)
 {
-	m_font.loadFromFile("E:/Projects/Firefly-Synchronization/Firefly-Synchronization/Firefly-Synchronization/arial.ttf");
+	m_font.loadFromFile("./../Firefly-Synchronization/arial.ttf");
 }
 
 void CFirefly::Init(const float& firefliesRadius, const float& influenceRadius, float posX, float posY)
