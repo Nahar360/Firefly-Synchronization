@@ -5,14 +5,14 @@
 #include <vector>
 #include <iostream>
 
-void CNetwork::Init(const int& numFireflies)
+void CNetwork::Init(const int& numFireflies, const float& firefliesRadius, const float& influenceRadius)
 {
 	m_fireflies.clear();
 
 	for (int i = 0; i < numFireflies; i++)
 	{
 		CFirefly firefly(i + 1);
-		firefly.Init();
+		firefly.Init(firefliesRadius, influenceRadius);
 
 		const float minRate = 1.0f;
 		const float maxRate = 5.0f;
@@ -54,6 +54,7 @@ void CNetwork::Scan()
 	{
 		for (int i = 0; i < m_fireflies.size(); i++)
 		{
+			// Distance to other fireflies
 			std::vector<std::pair<int, float>> distancesToOtherFireflies;
 			for (int j = 0; j < m_fireflies.size(); j++)
 			{
@@ -68,6 +69,7 @@ void CNetwork::Scan()
 				}
 			}
 
+			// Calculate closest firefly
 			int closestFirefly = -1;
 			float minDistance = distancesToOtherFireflies[0].second;
 			for (int j = 0; j < distancesToOtherFireflies.size(); j++)
@@ -80,6 +82,23 @@ void CNetwork::Scan()
 			}
 
 			m_fireflies[i].SetClosestFirefly(closestFirefly);
+
+			// Calculate neighbours (inside the influence radius)
+			std::vector<int> neighbours;
+
+			for (int j = 0; j < distancesToOtherFireflies.size(); j++)
+			{
+				// TODO:
+				// m_fireflies[i].GetInfluenceRadius() does the job for now,
+				// because all influence radii are the same
+				// I should loop all the rest of the fireflies here as well
+				if (distancesToOtherFireflies[j].second <= m_fireflies[i].GetInfluenceRadius())
+				{
+					neighbours.push_back(distancesToOtherFireflies[j].first);
+				}
+			}
+
+			m_fireflies[i].SetNeighbours(neighbours);
 		}
 	}
 }
@@ -111,7 +130,7 @@ void CNetwork::ResetBlinkingClock()
 void CNetwork::CreateFirefly()
 {
 	CFirefly firefly(m_fireflies.size() + 1);
-	firefly.Init(75.0f, 75.0f); // default position, top left corner
+	firefly.Init(50.0f, 150.0f, 75.0f, 75.0f); // default position, top left corner
 	m_fireflies.push_back(firefly);
 }
 
@@ -121,6 +140,11 @@ void CNetwork::DeleteFirefly()
 	{
 		m_fireflies.pop_back();
 	}
+}
+
+void CNetwork::ClearFireflies()
+{
+	m_fireflies.clear();
 }
 
 void CNetwork::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos)
@@ -148,6 +172,14 @@ std::vector<CFirefly> CNetwork::GetFireflies() const
 void CNetwork::ShowLines(const bool& show)
 {
 	m_showLines = show;
+}
+
+void CNetwork::ShowInfluenceRadius(const bool& show)
+{
+	for (int i = 0; i < m_fireflies.size(); i++)
+	{
+		m_fireflies[i].SetShowInfluenceRadius(show);
+	}
 }
 
 void CNetwork::ShowVertices(const bool& show)

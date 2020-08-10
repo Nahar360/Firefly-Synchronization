@@ -24,6 +24,8 @@ private:
 	sf::Clock m_deltaClock;
 
 	int m_numFireflies = 5;
+	float m_firefliesRadius = 50.0f;
+	float m_influenceRadius = 150.0f;
 
 	char m_windowTitle[255] = "Firefly Synchronization";
 
@@ -33,6 +35,7 @@ private:
 	float m_firefliesColorInput[3] = { 1.f, 0.f, 0.f };
 
 	bool m_showLines = false;
+	bool m_showInfluenceRadius = true;
 	bool m_showVertices = false;
 
 	float m_blinkingDuration = 0.1f;
@@ -48,10 +51,12 @@ private:
 	void UpdateBackgroundColor();
 	void UpdateFirefliesColor(CNetwork& network);
 	void UpdateShowLines(CNetwork& network);
+	void UpdateShowInfluenceRadius(CNetwork& network);
 	void UpdateShowVertices(CNetwork& network);
 	void UpdateBlinkingDuration(CNetwork& network);
 	void ResetBlinkingClock(CNetwork& network);
 	void CreateFirefly(CNetwork& network);
 	void DeleteFirefly(CNetwork& network);
+	void ClearFireflies(CNetwork& network);
 	void ListFireflies(CNetwork& network);
 };

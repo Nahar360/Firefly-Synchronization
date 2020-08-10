@@ -63,6 +63,8 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 
 	UpdateShowLines(network);
 	ImGui::SameLine();
+	UpdateShowInfluenceRadius(network);
+	ImGui::SameLine();
 	UpdateShowVertices(network);
 
 	ImGui::Separator();
@@ -76,6 +78,8 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 	CreateFirefly(network);
 	ImGui::SameLine();
 	DeleteFirefly(network);
+	ImGui::SameLine();
+	ClearFireflies(network);
 
 	ListFireflies(network);
 }
@@ -121,9 +125,13 @@ void CUiManager::InitialiseNetwork(CNetwork& network)
 {
 	ImGui::InputInt("No. of fireflies", &m_numFireflies);
 
+	ImGui::InputFloat("Fireflies radius", &m_firefliesRadius, 0.001f, 0.001f, "%.2f");
+
+	ImGui::InputFloat("Influence radius", &m_influenceRadius, 0.001f, 0.001f, "%.2f");
+
 	if (ImGui::Button("Initialise network"))
 	{
-		network.Init(m_numFireflies);
+		network.Init(m_numFireflies, m_firefliesRadius, m_influenceRadius);
 	}
 }
 
@@ -155,6 +163,14 @@ void CUiManager::UpdateShowLines(CNetwork& network)
 	if (ImGui::Checkbox("Show Lines", &m_showLines))
 	{
 		network.ShowLines(m_showLines);
+	}
+}
+
+void CUiManager::UpdateShowInfluenceRadius(CNetwork& network)
+{
+	if (ImGui::Checkbox("Show Influence Radius", &m_showInfluenceRadius))
+	{
+		network.ShowInfluenceRadius(m_showInfluenceRadius);
 	}
 }
 
@@ -198,6 +214,14 @@ void CUiManager::DeleteFirefly(CNetwork& network)
 	}
 }
 
+void CUiManager::ClearFireflies(CNetwork& network)
+{
+	if (ImGui::Button("Clear fireflies"))
+	{
+		network.ClearFireflies();
+	}
+}
+
 void CUiManager::ListFireflies(CNetwork& network)
 {
 	auto fireflies = network.GetFireflies();
@@ -209,11 +233,53 @@ void CUiManager::ListFireflies(CNetwork& network)
 		if (fireflies[i].GetSelected())
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 1),
-				"---> [%d] - Position: (%.0f, %.0f). Blinking rate: %0.1f s. Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
+				"---> [%d] - Blink. rate: %0.1f s. Closest: [%d].",
+				fireflies[i].GetId(), fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
+
+			ImGui::SameLine();
+
+			ImGui::TextColored(ImVec4(0, 1, 0, 1),"Neighbours: [");
+			ImGui::SameLine();
+			std::vector<int> neighbours = fireflies[i].GetNeighbours();
+			for (int j = 0; j < neighbours.size(); j++)
+			{
+				if (j != neighbours.size() - 1)
+				{
+					ImGui::TextColored(ImVec4(0, 1, 0, 1), "%d ", neighbours[j]);
+				}
+				else
+				{
+					ImGui::TextColored(ImVec4(0, 1, 0, 1), "%d", neighbours[j]);
+				}
+
+				ImGui::SameLine();
+			}
+			ImGui::TextColored(ImVec4(0, 1, 0, 1), "]");
 		}
 		else
 		{
-			ImGui::Text("[%d] - Position: (%.0f, %.0f). Blinking rate: %0.1f s. Closest: [%d]", fireflies[i].GetId(), fireflies[i].GetPosition().x, fireflies[i].GetPosition().y, fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
+			ImGui::Text("[%d] - Blink. rate: %0.1f s. Closest: [%d].",
+				fireflies[i].GetId(), fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
+
+			ImGui::SameLine();
+
+			ImGui::Text("Neighbours: [");
+			ImGui::SameLine();
+			std::vector<int> neighbours = fireflies[i].GetNeighbours();
+			for (int j = 0; j < neighbours.size(); j++)
+			{
+				if (j != neighbours.size() - 1)
+				{
+					ImGui::Text("%d ", neighbours[j]);
+				}
+				else
+				{
+					ImGui::Text("%d", neighbours[j]);
+				}
+				
+				ImGui::SameLine();
+			}
+			ImGui::Text("]");
 		}
 	}
 	ImGui::EndChild();

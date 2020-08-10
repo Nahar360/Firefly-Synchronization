@@ -9,10 +9,10 @@ CFirefly::CFirefly(int id) :
 	m_font.loadFromFile("E:/Projects/Firefly-Synchronization/Firefly-Synchronization/Firefly-Synchronization/arial.ttf");
 }
 
-void CFirefly::Init(float posX, float posY)
+void CFirefly::Init(const float& firefliesRadius, const float& influenceRadius, float posX, float posY)
 {
 	// Firefly
-	m_firefly.setRadius(50.0f);
+	m_firefly.setRadius(firefliesRadius);
 	m_firefly.setPointCount(6);
 	m_originalColor = sf::Color(255, 0, 0);
 	m_firefly.setFillColor(m_originalColor);
@@ -53,6 +53,15 @@ void CFirefly::Init(float posX, float posY)
 	}
 
 	SetVertices(m_firefly.getPosition());
+
+	// Influence radius
+	m_influenceRadius.setRadius(influenceRadius);
+	m_influenceRadius.setFillColor(sf::Color::Transparent);
+	m_influenceRadius.setOutlineThickness(1.5f);
+	sf::Color influenceRadiusColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
+	m_influenceRadius.setOutlineColor(influenceRadiusColor);
+	m_influenceRadius.setPosition(m_firefly.getPosition().x, m_firefly.getPosition().y);
+	m_influenceRadius.setOrigin(m_influenceRadius.getRadius(), m_influenceRadius.getRadius());
 
 	// Text
 	m_idText.setString(std::to_string(GetId()));
@@ -115,6 +124,11 @@ void CFirefly::Update(sf::RenderWindow& window)
 		}
 	}
 
+	if (m_showInfluenceRadius)
+	{
+		window.draw(m_influenceRadius);
+	}
+
 	m_idText.setFont(m_font);
 	window.draw(m_idText);
 
@@ -156,6 +170,8 @@ void CFirefly::UpdatePosition(float x, float y)
 
 		SetVertices(sf::Vector2f(x, y));
 
+		m_influenceRadius.setPosition(x, y);
+
 		m_idText.setPosition(x, y - 37.5f);
 	}
 }
@@ -184,6 +200,8 @@ void CFirefly::UpdateColor(sf::Color color)
 	{
 		m_vertices[i].setFillColor(decoColor);
 	}
+
+	m_influenceRadius.setOutlineColor(decoColor);
 }
 
 bool CFirefly::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos)
@@ -232,6 +250,11 @@ sf::Vector2f CFirefly::GetPosition() const
 	return m_firefly.getPosition();
 }
 
+float CFirefly::GetInfluenceRadius() const
+{
+	return m_influenceRadius.getRadius();
+}
+
 void CFirefly::SetClosestFirefly(const int& closestFirefly)
 {
 	m_closestFirefly = closestFirefly;
@@ -240,6 +263,16 @@ void CFirefly::SetClosestFirefly(const int& closestFirefly)
 int CFirefly::GetClosestFirefly() const
 {
 	return m_closestFirefly;
+}
+
+void CFirefly::SetNeighbours(const std::vector<int>& neighbours)
+{
+	m_neighbours = neighbours;
+}
+
+std::vector<int> CFirefly::GetNeighbours() const
+{
+	return m_neighbours;
 }
 
 void CFirefly::SetSelected(const bool& selected)
@@ -274,6 +307,11 @@ void CFirefly::SetBlinkingDuration(const float& blinkingDuration)
 void CFirefly::ResetBlinking()
 {
 	m_clock.restart();
+}
+
+void CFirefly::SetShowInfluenceRadius(const bool& show)
+{
+	m_showInfluenceRadius = show;
 }
 
 void CFirefly::SetShowVertices(const bool& show)

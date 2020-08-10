@@ -8,7 +8,7 @@ public:
 	CFirefly(int id);
 	~CFirefly() = default;
 
-	void Init(float posX = 0.0f, float posY = 0.0f);
+	void Init(const float& firefliesRadius = 50.0f, const float& influenceRadius = 150.0f, float posX = 0.0f, float posY = 0.0f);
 	void SetVertices(sf::Vector2f center);
 	void Update(sf::RenderWindow& window);
 	void UpdatePosition(float x, float y);
@@ -26,8 +26,13 @@ public:
 
 	sf::Vector2f GetPosition() const;
 
+	float GetInfluenceRadius() const;
+
 	void SetClosestFirefly(const int& closestFirefly);
 	int GetClosestFirefly() const;
+
+	void SetNeighbours(const std::vector<int>& neighbours);
+	std::vector<int> GetNeighbours() const;
 
 	void SetSelected(const bool& selected);
 	bool GetSelected() const;
@@ -38,24 +43,27 @@ public:
 	void SetBlinkingDuration(const float& blinkingDuration);
 	void ResetBlinking();
 
+	void SetShowInfluenceRadius(const bool& show);
 	void SetShowVertices(const bool& show);
 
 private:
 	sf::CircleShape m_firefly;
 	sf::CircleShape m_center;
 	std::vector<sf::CircleShape> m_vertices;
-
-	int m_id;
-
+	sf::CircleShape m_influenceRadius;
 	sf::Font m_font;
 	sf::Text m_idText;
+
+	int m_id;
 
 	sf::Color m_originalColor;
 	float m_blinkingRate = 2.0f;
 	float m_blinkingDuration = 0.1f;
 
 	int m_closestFirefly = -1;
+	std::vector<int> m_neighbours;
 
+	bool m_showInfluenceRadius = true;
 	bool m_showVertices = false;
 
 	bool m_selected = false;
