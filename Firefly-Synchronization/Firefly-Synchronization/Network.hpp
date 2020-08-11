@@ -24,6 +24,7 @@ public:
 	void DeleteFirefly();
 	void ClearFireflies();
 
+	CFirefly GetFirefly(const int& id) const;
 	std::vector<CFirefly> GetFireflies() const;
 
 private:

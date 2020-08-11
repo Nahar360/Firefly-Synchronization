@@ -90,32 +90,28 @@ void CNetwork::HandlePulses()
 		for (int i = 0; i < m_fireflies.size(); i++)
 		{
 			std::vector<int> neighbours = m_fireflies[i].GetNeighbours();
-			for (int j = 0; j < m_fireflies.size(); j++)
+			for (int j = 0; j < neighbours.size(); j++)
 			{
-				const bool isNeighbour = (std::find(neighbours.begin(), neighbours.end(), m_fireflies[j].GetId()) != neighbours.end());
-				if (isNeighbour)
+				CFirefly otherFirefly = GetFirefly(neighbours[j]);
+				// Check if neighbour has emitted a pulse
+				if (otherFirefly.GetHasEmittedPulse())
 				{
-					if (m_fireflies[j].GetHasEmittedPulse())
-					{
-						// At this point,
-						// firefly i
-						// has realised that
-						// neighbour firefly j has transmitted a pulse
-						float phase = m_fireflies[i].GetBlinkingRate();
-						float bDissipationFactor = BLINKING_DURATION;
-						float eAmplitudeIncrement = 0.2f;
-						float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
-						float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
-						float phaseRespondCurve = 1;
-						if (alpha * phase + beta < 1)
-						{
-							phaseRespondCurve = alpha * phase + beta;
-						}
-						float deltaPhase = phaseRespondCurve;
-						phase += deltaPhase;
+					otherFirefly.SetHasEmittedPulse(false);
 
-						m_fireflies[i].SetBlinkingRate(phase);
+					float phase = m_fireflies[i].GetBlinkingRate();
+					float bDissipationFactor = BLINKING_DURATION;
+					float eAmplitudeIncrement = 0.1f;
+					float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
+					float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
+					float phaseRespondCurve = 1;
+					if (alpha * phase + beta < 1)
+					{
+						phaseRespondCurve = alpha * phase + beta;
 					}
+					float deltaPhase = phaseRespondCurve;
+					phase += deltaPhase;
+
+					m_fireflies[i].SetBlinkingRate(phase);
 				}
 			}
 		}
@@ -219,6 +215,11 @@ void CNetwork::UnselectAllFireflies()
 			m_fireflies[i].SetSelected(false);
 		}
 	}
+}
+
+CFirefly CNetwork::GetFirefly(const int& id) const
+{
+	return m_fireflies[id - 1];
 }
 
 std::vector<CFirefly> CNetwork::GetFireflies() const
