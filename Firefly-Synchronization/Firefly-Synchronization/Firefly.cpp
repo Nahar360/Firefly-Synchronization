@@ -19,8 +19,8 @@ void CFirefly::Init(float posX, float posY)
 	m_originalColor.r = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[0] * 255.f);
 	m_originalColor.g = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[1] * 255.f);
 	m_originalColor.b = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[2] * 255.f);
-
 	m_firefly.setFillColor(m_originalColor);
+
 	m_firefly.setOutlineThickness(2.5f);
 	sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
 	m_firefly.setOutlineColor(decoColor);
@@ -182,11 +182,11 @@ void CFirefly::UpdatePosition(float x, float y)
 
 void CFirefly::UpdateRotation()
 {
-	m_firefly.setRotation(m_firefly.getRotation() + 0.2f);
+	m_firefly.rotate(0.2f);
 
 	for (int i = 0; i < m_vertices.size(); i++)
 	{
-		m_vertices[i].setRotation(m_vertices[i].getRotation() + 0.2f);
+		m_vertices[i].rotate(0.2f);
 	}
 }
 
