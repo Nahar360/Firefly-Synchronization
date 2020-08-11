@@ -15,8 +15,6 @@ void CGame::Run()
 	{
 		CheckEvents();
 
-		CheckInput();
-
 		m_uiManager.Run(m_window, m_network);
 
 		m_window.clear(BACKGROUND_COLOR);
@@ -44,17 +42,22 @@ void CGame::CheckEvents()
 			m_window.close();
 		}
 	}
-}
 
-void CGame::CheckInput()
-{
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
+		m_mouseHasBeenPressed = true;
 		m_network.MouseDetection(sf::Mouse::Button::Left, sf::Mouse::getPosition(m_window));
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
+		m_mouseHasBeenPressed = true;
 		m_network.MouseDetection(sf::Mouse::Button::Right, sf::Mouse::getPosition(m_window));
+	}
+
+	if (m_mouseHasBeenPressed && event.type == sf::Event::MouseButtonReleased)
+	{
+		m_mouseHasBeenPressed = false;
+		m_network.UnselectAllFireflies();
 	}
 }

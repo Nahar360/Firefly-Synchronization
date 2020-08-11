@@ -120,7 +120,7 @@ void CFirefly::Update(sf::RenderWindow& window)
 	window.draw(m_firefly);
 	window.draw(m_center);
 
-	if (SHOW_VERTICES)
+	if (m_selected)
 	{
 		for (int i = 0; i < m_vertices.size(); i++)
 		{

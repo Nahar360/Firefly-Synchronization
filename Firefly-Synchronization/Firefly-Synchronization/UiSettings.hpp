@@ -14,6 +14,5 @@ extern const char* SHOW_LINES_OPTIONS[3];
 extern int SHOW_LINES_OPTION;
 
 extern bool SHOW_INFLUENCE_RADIUS;
-extern bool SHOW_VERTICES;
 
 extern float BLINKING_DURATION;

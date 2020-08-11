@@ -14,6 +14,7 @@ public:
 	void Update(sf::RenderWindow& window);
 	void Scan();
 	void MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos);
+	void UnselectAllFireflies();
 
 	void UpdateFirefliesColor(sf::Color color);
 

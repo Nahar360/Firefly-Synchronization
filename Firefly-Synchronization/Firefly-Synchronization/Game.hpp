@@ -19,7 +19,8 @@ private:
 	CUiManager m_uiManager;
 	CNetwork m_network;
 
+	bool m_mouseHasBeenPressed = false;
+
 	void CheckEvents();
-	void CheckInput();
 };
 

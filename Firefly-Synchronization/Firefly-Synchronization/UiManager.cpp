@@ -75,8 +75,6 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 	UpdateShowLines(network);
 
 	UpdateShowInfluenceRadius(network);
-	ImGui::SameLine();
-	UpdateShowVertices(network);
 
 	// -------------------------
 	ImGui::Separator();
@@ -182,11 +180,6 @@ void CUiManager::UpdateShowLines(CNetwork& network)
 void CUiManager::UpdateShowInfluenceRadius(CNetwork& network)
 {
 	ImGui::Checkbox("Show Influence Radius", &SHOW_INFLUENCE_RADIUS);
-}
-
-void CUiManager::UpdateShowVertices(CNetwork& network)
-{
-	ImGui::Checkbox("Show Vertices", &SHOW_VERTICES);
 }
 
 void CUiManager::UpdateBlinkingDuration(CNetwork& network)

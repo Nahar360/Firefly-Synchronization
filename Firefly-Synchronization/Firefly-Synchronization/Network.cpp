@@ -163,6 +163,17 @@ void CNetwork::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mouseP
 	}
 }
 
+void CNetwork::UnselectAllFireflies()
+{
+	for (int i = 0; i < m_fireflies.size(); i++)
+	{
+		if (m_fireflies[i].GetSelected())
+		{
+			m_fireflies[i].SetSelected(false);
+		}
+	}
+}
+
 std::vector<CFirefly> CNetwork::GetFireflies() const
 {
 	return m_fireflies;
