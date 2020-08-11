@@ -6,18 +6,16 @@
 #include <vector>
 #include <iostream>
 
-void CNetwork::Init(const int& numFireflies, const float& firefliesRadius, const float& influenceRadius)
+void CNetwork::Init()
 {
 	m_fireflies.clear();
 
-	for (int i = 0; i < numFireflies; i++)
+	for (int i = 0; i < NUM_FIREFLIES; i++)
 	{
 		CFirefly firefly(i + 1);
-		firefly.Init(firefliesRadius, influenceRadius);
+		firefly.Init();
 
-		const float minRate = 1.0f;
-		const float maxRate = 5.0f;
-		float blinkingRate = minRate + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (maxRate - minRate)));
+		float blinkingRate = MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
 		firefly.SetBlinkingRate(blinkingRate);
 
 		m_fireflies.push_back(firefly);
@@ -138,7 +136,7 @@ void CNetwork::ResetBlinkingClock()
 void CNetwork::CreateFirefly()
 {
 	CFirefly firefly(m_fireflies.size() + 1);
-	firefly.Init(50.0f, 150.0f, 75.0f, 75.0f); // default position, top left corner
+	firefly.Init(75.0f, 75.0f); // default position, top left corner
 
 	m_fireflies.push_back(firefly);
 }

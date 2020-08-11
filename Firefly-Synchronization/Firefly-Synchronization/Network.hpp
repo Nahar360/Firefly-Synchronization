@@ -10,7 +10,7 @@ public:
 	CNetwork() = default;
 	~CNetwork() = default;
 
-	void Init(const int& numFireflies, const float& firefliesRadius, const float& influenceRadius);
+	void Init();
 	void Update(sf::RenderWindow& window);
 	void Scan();
 	void MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos);

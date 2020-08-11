@@ -10,12 +10,16 @@ CFirefly::CFirefly(int id) :
 	m_font.loadFromFile("./../Firefly-Synchronization/arial.ttf");
 }
 
-void CFirefly::Init(const float& firefliesRadius, const float& influenceRadius, float posX, float posY)
+void CFirefly::Init(float posX, float posY)
 {
 	// Firefly
-	m_firefly.setRadius(firefliesRadius);
+	m_firefly.setRadius(FIREFLIES_RADIUS);
 	m_firefly.setPointCount(6);
-	m_originalColor = sf::Color(255, 0, 0);
+
+	m_originalColor.r = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[0] * 255.f);
+	m_originalColor.g = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[1] * 255.f);
+	m_originalColor.b = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[2] * 255.f);
+
 	m_firefly.setFillColor(m_originalColor);
 	m_firefly.setOutlineThickness(2.5f);
 	sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
@@ -56,11 +60,10 @@ void CFirefly::Init(const float& firefliesRadius, const float& influenceRadius, 
 	SetVertices(m_firefly.getPosition());
 
 	// Influence radius
-	m_influenceRadius.setRadius(influenceRadius);
+	m_influenceRadius.setRadius(INFLUENCE_RADIUS);
 	m_influenceRadius.setFillColor(sf::Color::Transparent);
 	m_influenceRadius.setOutlineThickness(1.5f);
-	sf::Color influenceRadiusColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
-	m_influenceRadius.setOutlineColor(influenceRadiusColor);
+	m_influenceRadius.setOutlineColor(decoColor);
 	m_influenceRadius.setPosition(m_firefly.getPosition().x, m_firefly.getPosition().y);
 	m_influenceRadius.setOrigin(m_influenceRadius.getRadius(), m_influenceRadius.getRadius());
 

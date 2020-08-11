@@ -133,9 +133,13 @@ void CUiManager::InitialiseNetwork(CNetwork& network)
 
 	ImGui::InputFloat("Influence radius", &INFLUENCE_RADIUS, 0.001f, 0.001f, "%.2f");
 
+	ImGui::InputFloat("Min. blinking rate", &MIN_BLINKING_RATE, 0.001f, 0.001f, "%.2f");
+
+	ImGui::InputFloat("Max. blinking rate", &MAX_BLINKING_RATE, 0.001f, 0.001f, "%.2f");
+
 	if (ImGui::Button("Initialise network"))
 	{
-		network.Init(NUM_FIREFLIES, FIREFLIES_RADIUS, INFLUENCE_RADIUS);
+		network.Init();
 	}
 }
 

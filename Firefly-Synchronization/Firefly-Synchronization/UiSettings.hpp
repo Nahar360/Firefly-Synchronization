@@ -5,6 +5,9 @@ extern int NUM_FIREFLIES;
 extern float FIREFLIES_RADIUS;
 extern float INFLUENCE_RADIUS;
 
+extern float MIN_BLINKING_RATE;
+extern float MAX_BLINKING_RATE;
+
 extern float FIREFLIES_COLOR_INPUT[3];
 
 extern const char* SHOW_LINES_OPTIONS[3];

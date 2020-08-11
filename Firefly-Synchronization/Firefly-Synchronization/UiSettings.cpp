@@ -5,6 +5,9 @@ int NUM_FIREFLIES = 5;
 float FIREFLIES_RADIUS = 50.0f;
 float INFLUENCE_RADIUS = 150.0f;
 
+float MIN_BLINKING_RATE = 1.0f;
+float MAX_BLINKING_RATE = 5.0f;
+
 float FIREFLIES_COLOR_INPUT[3] = { 1.0f, 0.0f, 0.0f };
 
 const char* SHOW_LINES_OPTIONS[3] = { "None", "All", "Only neighbours" };

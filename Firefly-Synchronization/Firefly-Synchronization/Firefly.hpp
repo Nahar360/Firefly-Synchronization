@@ -8,7 +8,7 @@ public:
 	CFirefly(int id);
 	~CFirefly() = default;
 
-	void Init(const float& firefliesRadius = 50.0f, const float& influenceRadius = 150.0f, float posX = 0.0f, float posY = 0.0f);
+	void Init(float posX = 0.0f, float posY = 0.0f);
 	void SetVertices(sf::Vector2f center);
 	void Update(sf::RenderWindow& window);
 	void UpdatePosition(float x, float y);
