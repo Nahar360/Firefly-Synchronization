@@ -16,8 +16,6 @@ public:
 	void UpdateColor(sf::Color color);
 	bool MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos);
 
-	void BlinkEffect();
-
 	sf::CircleShape GetFirefly() const;
 
 	sf::Color GetColor() const;
@@ -40,11 +38,7 @@ public:
 	void SetBlinkingRate(const float& blinkingRate);
 	float GetBlinkingRate() const;
 
-	void SetBlinkingDuration(const float& blinkingDuration);
 	void ResetBlinking();
-
-	void SetShowInfluenceRadius(const bool& show);
-	void SetShowVertices(const bool& show);
 
 private:
 	sf::CircleShape m_firefly;
@@ -58,15 +52,13 @@ private:
 
 	sf::Color m_originalColor;
 	float m_blinkingRate = 2.0f;
-	float m_blinkingDuration = 0.1f;
 
 	int m_closestFirefly = -1;
 	std::vector<int> m_neighbours;
 
-	bool m_showInfluenceRadius = true;
-	bool m_showVertices = false;
-
 	bool m_selected = false;
 
 	sf::Clock m_clock;
+
+	void BlinkEffect();
 };

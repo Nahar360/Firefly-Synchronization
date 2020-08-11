@@ -18,27 +18,8 @@ public:
 	void Run(sf::RenderWindow& window, CNetwork& network);
 	void Render(sf::RenderWindow& window);
 
-	sf::Color GetBackgroundColor() const;
-
 private:
 	sf::Clock m_deltaClock;
-
-	int m_numFireflies = 5;
-	float m_firefliesRadius = 50.0f;
-	float m_influenceRadius = 150.0f;
-
-	char m_windowTitle[255] = "Firefly Synchronization";
-
-	sf::Color m_backgroundColor = { 105, 105, 105 };
-	float m_backgroundColorInput[3] = { 0.41f, 0.41f, 0.41f };
-
-	float m_firefliesColorInput[3] = { 1.f, 0.f, 0.f };
-
-	bool m_showLines = false;
-	bool m_showInfluenceRadius = true;
-	bool m_showVertices = false;
-
-	float m_blinkingDuration = 0.1f;
 
 	void Update(sf::RenderWindow& window);
 	void Begin();

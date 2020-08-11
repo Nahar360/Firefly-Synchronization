@@ -1,6 +1,7 @@
 #include "UiManager.hpp"
 
 #include "GlobalSettings.hpp"
+#include "UiSettings.hpp"
 
 #include "imgui.h"
 #include "imgui-SFML.h"
@@ -66,7 +67,7 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 	UpdateFirefliesColor(network);
 
 	UpdateShowLines(network);
-	
+
 	UpdateShowInfluenceRadius(network);
 	ImGui::SameLine();
 	UpdateShowVertices(network);
@@ -102,16 +103,11 @@ void CUiManager::Render(sf::RenderWindow& window)
 	ImGui::SFML::Render(window);
 }
 
-sf::Color CUiManager::GetBackgroundColor() const
-{
-	return m_backgroundColor;
-}
-
 void CUiManager::UpdateWindowTitle(sf::RenderWindow& window)
 {
-	if (ImGui::InputText("Window title", m_windowTitle, 255))
+	if (ImGui::InputText("Window title", WINDOW_TITLE, 255))
 	{
-		window.setTitle(m_windowTitle);
+		window.setTitle(WINDOW_TITLE);
 	}
 }
 
@@ -131,36 +127,36 @@ void CUiManager::UpdateMousePosition(sf::RenderWindow& window)
 
 void CUiManager::InitialiseNetwork(CNetwork& network)
 {
-	ImGui::InputInt("No. of fireflies", &m_numFireflies);
+	ImGui::InputInt("No. of fireflies", &NUM_FIREFLIES);
 
-	ImGui::InputFloat("Fireflies radius", &m_firefliesRadius, 0.001f, 0.001f, "%.2f");
+	ImGui::InputFloat("Fireflies radius", &FIREFLIES_RADIUS, 0.001f, 0.001f, "%.2f");
 
-	ImGui::InputFloat("Influence radius", &m_influenceRadius, 0.001f, 0.001f, "%.2f");
+	ImGui::InputFloat("Influence radius", &INFLUENCE_RADIUS, 0.001f, 0.001f, "%.2f");
 
 	if (ImGui::Button("Initialise network"))
 	{
-		network.Init(m_numFireflies, m_firefliesRadius, m_influenceRadius);
+		network.Init(NUM_FIREFLIES, FIREFLIES_RADIUS, INFLUENCE_RADIUS);
 	}
 }
 
 void CUiManager::UpdateBackgroundColor()
 {
-	if (ImGui::ColorEdit3("Background color", m_backgroundColorInput))
+	if (ImGui::ColorEdit3("Background color", BACKGROUND_COLOR_INPUT))
 	{
-		m_backgroundColor.r = static_cast<sf::Uint8>(m_backgroundColorInput[0] * 255.f);
-		m_backgroundColor.g = static_cast<sf::Uint8>(m_backgroundColorInput[1] * 255.f);
-		m_backgroundColor.b = static_cast<sf::Uint8>(m_backgroundColorInput[2] * 255.f);
+		BACKGROUND_COLOR.r = static_cast<sf::Uint8>(BACKGROUND_COLOR_INPUT[0] * 255.f);
+		BACKGROUND_COLOR.g = static_cast<sf::Uint8>(BACKGROUND_COLOR_INPUT[1] * 255.f);
+		BACKGROUND_COLOR.b = static_cast<sf::Uint8>(BACKGROUND_COLOR_INPUT[2] * 255.f);
 	}
 }
 
 void CUiManager::UpdateFirefliesColor(CNetwork& network)
 {
-	if (ImGui::ColorEdit3("Fireflies color", m_firefliesColorInput))
+	if (ImGui::ColorEdit3("Fireflies color", FIREFLIES_COLOR_INPUT))
 	{
 		sf::Color firefliesColor;
-		firefliesColor.r = static_cast<sf::Uint8>(m_firefliesColorInput[0] * 255.f);
-		firefliesColor.g = static_cast<sf::Uint8>(m_firefliesColorInput[1] * 255.f);
-		firefliesColor.b = static_cast<sf::Uint8>(m_firefliesColorInput[2] * 255.f);
+		firefliesColor.r = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[0] * 255.f);
+		firefliesColor.g = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[1] * 255.f);
+		firefliesColor.b = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[2] * 255.f);
 
 		network.UpdateFirefliesColor(firefliesColor);
 	}
@@ -168,37 +164,22 @@ void CUiManager::UpdateFirefliesColor(CNetwork& network)
 
 void CUiManager::UpdateShowLines(CNetwork& network)
 {
-	const char* showLinesOptions[] = { "None", "All", "Only neighbours" };
-	static int showLinesOptionSelected = 0;
-	
-	if (ImGui::Combo("Show Lines", &showLinesOptionSelected, showLinesOptions, IM_ARRAYSIZE(showLinesOptions)))
-	{
-		network.SetShowLinesOption(showLinesOptionSelected);
-	}
+	ImGui::Combo("Show Lines", &SHOW_LINES_OPTION, SHOW_LINES_OPTIONS, IM_ARRAYSIZE(SHOW_LINES_OPTIONS));
 }
 
 void CUiManager::UpdateShowInfluenceRadius(CNetwork& network)
 {
-	if (ImGui::Checkbox("Show Influence Radius", &m_showInfluenceRadius))
-	{
-		network.ShowInfluenceRadius(m_showInfluenceRadius);
-	}
+	ImGui::Checkbox("Show Influence Radius", &SHOW_INFLUENCE_RADIUS);
 }
 
 void CUiManager::UpdateShowVertices(CNetwork& network)
 {
-	if (ImGui::Checkbox("Show Vertices", &m_showVertices))
-	{
-		network.ShowVertices(m_showVertices);
-	}
+	ImGui::Checkbox("Show Vertices", &SHOW_VERTICES);
 }
 
 void CUiManager::UpdateBlinkingDuration(CNetwork& network)
 {
-	if (ImGui::InputFloat("Blinking duration (s)", &m_blinkingDuration, 0.001f, 0.001f, "%.2f"))
-	{
-		network.UpdateFirefliesBlinkingDuration(m_blinkingDuration);
-	}
+	ImGui::InputFloat("Blinking duration (s)", &BLINKING_DURATION, 0.001f, 0.001f, "%.2f");
 }
 
 void CUiManager::ResetBlinkingClock(CNetwork& network)
@@ -249,7 +230,7 @@ void CUiManager::ListFireflies(CNetwork& network)
 
 			ImGui::SameLine();
 
-			ImGui::TextColored(ImVec4(0, 1, 0, 1),"Neighbours: [");
+			ImGui::TextColored(ImVec4(0, 1, 0, 1), "Neighbours: [");
 			ImGui::SameLine();
 			std::vector<int> neighbours = fireflies[i].GetNeighbours();
 			for (int j = 0; j < neighbours.size(); j++)
@@ -287,7 +268,7 @@ void CUiManager::ListFireflies(CNetwork& network)
 				{
 					ImGui::Text("%d", neighbours[j]);
 				}
-				
+
 				ImGui::SameLine();
 			}
 			ImGui::Text("]");

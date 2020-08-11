@@ -17,7 +17,6 @@ public:
 
 	void UpdateFirefliesColor(sf::Color color);
 
-	void UpdateFirefliesBlinkingDuration(float blinkingDuration);
 	void ResetBlinkingClock();
 
 	void CreateFirefly();
@@ -26,14 +25,8 @@ public:
 
 	std::vector<CFirefly> GetFireflies() const;
 
-	void SetShowLinesOption(const int& option);
-	void ShowInfluenceRadius(const bool& show);
-	void ShowVertices(const bool& show);
-
 private:
 	std::vector<CFirefly> m_fireflies;
-
-	int m_showLinesOption = 0;
 
 	void ShowLines(sf::RenderWindow& window);
 };

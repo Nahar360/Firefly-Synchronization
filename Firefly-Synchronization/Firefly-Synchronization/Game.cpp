@@ -3,7 +3,7 @@
 #include "GlobalSettings.hpp"
 
 CGame::CGame() :
-	m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Firefly Synchronization")
+	m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_TITLE)
 {
 }
 
@@ -19,7 +19,7 @@ void CGame::Run()
 
 		m_uiManager.Run(m_window, m_network);
 
-		m_window.clear(m_uiManager.GetBackgroundColor());
+		m_window.clear(BACKGROUND_COLOR);
 
 		m_network.Update(m_window);
 

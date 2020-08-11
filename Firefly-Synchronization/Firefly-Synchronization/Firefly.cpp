@@ -1,6 +1,7 @@
 #include "Firefly.hpp"
 
 #include "GlobalSettings.hpp"
+#include "UiSettings.hpp"
 
 CFirefly::CFirefly(int id) :
 	m_id(id),
@@ -116,7 +117,7 @@ void CFirefly::Update(sf::RenderWindow& window)
 	window.draw(m_firefly);
 	window.draw(m_center);
 
-	if (m_showVertices)
+	if (SHOW_VERTICES)
 	{
 		for (int i = 0; i < m_vertices.size(); i++)
 		{
@@ -124,7 +125,7 @@ void CFirefly::Update(sf::RenderWindow& window)
 		}
 	}
 
-	if (m_showInfluenceRadius)
+	if (SHOW_INFLUENCE_RADIUS)
 	{
 		window.draw(m_influenceRadius);
 	}
@@ -146,7 +147,7 @@ void CFirefly::BlinkEffect()
 		m_center.setFillColor(sf::Color::Black);
 
 		// Back to original color
-		if (time > m_blinkingRate + m_blinkingDuration)
+		if (time > m_blinkingRate + BLINKING_DURATION)
 		{
 			m_firefly.setFillColor(m_originalColor);
 			sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
@@ -297,24 +298,7 @@ float CFirefly::GetBlinkingRate() const
 	return m_blinkingRate;
 }
 
-void CFirefly::SetBlinkingDuration(const float& blinkingDuration)
-{
-	m_blinkingDuration = blinkingDuration;
-
-	m_clock.restart();
-}
-
 void CFirefly::ResetBlinking()
 {
 	m_clock.restart();
-}
-
-void CFirefly::SetShowInfluenceRadius(const bool& show)
-{
-	m_showInfluenceRadius = show;
-}
-
-void CFirefly::SetShowVertices(const bool& show)
-{
-	m_showVertices = show;
 }

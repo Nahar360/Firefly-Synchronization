@@ -1,6 +1,7 @@
 #include "Network.hpp"
 
 #include "GlobalSettings.hpp"
+#include "UiSettings.hpp"
 
 #include <vector>
 #include <iostream>
@@ -92,7 +93,7 @@ void CNetwork::Scan()
 
 void CNetwork::ShowLines(sf::RenderWindow& window)
 {
-	if (m_showLinesOption != 0)
+	if (SHOW_LINES_OPTION != 0)
 	{
 		std::vector<sf::Vertex> lines;
 		for (int i = 0; i < m_fireflies.size(); i++)
@@ -106,7 +107,7 @@ void CNetwork::ShowLines(sf::RenderWindow& window)
 					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Green));
 					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Green));
 				}
-				else if (m_showLinesOption == 1)
+				else if (SHOW_LINES_OPTION == 1)
 				{
 					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Red));
 					lines.push_back(sf::Vertex(sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y), sf::Color::Red));
@@ -123,14 +124,6 @@ void CNetwork::UpdateFirefliesColor(sf::Color color)
 	for (int i = 0; i < m_fireflies.size(); i++)
 	{
 		m_fireflies[i].UpdateColor(color);
-	}
-}
-
-void CNetwork::UpdateFirefliesBlinkingDuration(float blinkingDuration)
-{
-	for (int i = 0; i < m_fireflies.size(); i++)
-	{
-		m_fireflies[i].SetBlinkingDuration(blinkingDuration);
 	}
 }
 
@@ -183,25 +176,4 @@ void CNetwork::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mouseP
 std::vector<CFirefly> CNetwork::GetFireflies() const
 {
 	return m_fireflies;
-}
-
-void CNetwork::SetShowLinesOption(const int& option)
-{
-	m_showLinesOption = option;
-}
-
-void CNetwork::ShowInfluenceRadius(const bool& show)
-{
-	for (int i = 0; i < m_fireflies.size(); i++)
-	{
-		m_fireflies[i].SetShowInfluenceRadius(show);
-	}
-}
-
-void CNetwork::ShowVertices(const bool& show)
-{
-	for (int i = 0; i < m_fireflies.size(); i++)
-	{
-		m_fireflies[i].SetShowVertices(show);
-	}
 }
