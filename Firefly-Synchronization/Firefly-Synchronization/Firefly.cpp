@@ -182,11 +182,11 @@ void CFirefly::UpdatePosition(float x, float y)
 
 void CFirefly::UpdateRotation()
 {
-	m_firefly.setRotation(m_firefly.getRotation() + 0.1f);
+	m_firefly.setRotation(m_firefly.getRotation() + 0.2f);
 
 	for (int i = 0; i < m_vertices.size(); i++)
 	{
-		m_vertices[i].setRotation(m_vertices[i].getRotation() + 0.1f);
+		m_vertices[i].setRotation(m_vertices[i].getRotation() + 0.2f);
 	}
 }
 
