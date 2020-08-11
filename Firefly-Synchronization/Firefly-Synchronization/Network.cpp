@@ -83,7 +83,7 @@ void CNetwork::Scan()
 
 void CNetwork::ShowLines(sf::RenderWindow& window)
 {
-	if (SHOW_LINES_OPTION != 0)
+	if (m_fireflies.size() > 1 && SHOW_LINES_OPTION != 0)
 	{
 		std::vector<sf::Vertex> lines;
 		for (int i = 0; i < m_fireflies.size(); i++)

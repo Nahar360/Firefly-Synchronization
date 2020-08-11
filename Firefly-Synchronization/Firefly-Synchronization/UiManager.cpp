@@ -48,6 +48,8 @@ void CUiManager::Run(sf::RenderWindow& window, CNetwork& network)
 
 void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 {
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "General settings");
+
 	UpdateWindowTitle(window);
 
 	UpdateMousePosition(window);
@@ -56,11 +58,15 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 	ImGui::Separator();
 	// -------------------------
 
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Fireflies settings");
+
 	InitialiseNetwork(network);
 
 	// -------------------------
 	ImGui::Separator();
 	// -------------------------
+
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Visualization settings");
 
 	UpdateBackgroundColor();
 
@@ -75,6 +81,8 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
 	// -------------------------
 	ImGui::Separator();
 	// -------------------------
+
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Blinking settings");
 
 	UpdateBlinkingDuration(network);
 
