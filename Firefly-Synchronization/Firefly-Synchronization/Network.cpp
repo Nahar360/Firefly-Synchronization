@@ -31,6 +31,8 @@ void CNetwork::Update(sf::RenderWindow& window)
 		m_fireflies[i].Update(window);
 	}
 
+	// HandlePulses();
+
 	ShowLines(window);
 }
 
@@ -81,6 +83,45 @@ void CNetwork::Scan()
 	}
 }
 
+void CNetwork::HandlePulses()
+{
+	if (m_fireflies.size() > 1)
+	{
+		for (int i = 0; i < m_fireflies.size(); i++)
+		{
+			std::vector<int> neighbours = m_fireflies[i].GetNeighbours();
+			for (int j = 0; j < m_fireflies.size(); j++)
+			{
+				const bool isNeighbour = (std::find(neighbours.begin(), neighbours.end(), m_fireflies[j].GetId()) != neighbours.end());
+				if (isNeighbour)
+				{
+					if (m_fireflies[j].GetHasEmittedPulse())
+					{
+						// At this point,
+						// firefly i
+						// has realised that
+						// neighbour firefly j has transmitted a pulse
+						float phase = m_fireflies[i].GetBlinkingRate();
+						float bDissipationFactor = BLINKING_DURATION;
+						float eAmplitudeIncrement = 0.2f;
+						float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
+						float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
+						float phaseRespondCurve = 1;
+						if (alpha * phase + beta < 1)
+						{
+							phaseRespondCurve = alpha * phase + beta;
+						}
+						float deltaPhase = phaseRespondCurve;
+						phase += deltaPhase;
+
+						m_fireflies[i].SetBlinkingRate(phase);
+					}
+				}
+			}
+		}
+	}
+}
+
 void CNetwork::ShowLines(sf::RenderWindow& window)
 {
 	if (m_fireflies.size() > 1 && SHOW_LINES_OPTION != 0)
@@ -105,7 +146,10 @@ void CNetwork::ShowLines(sf::RenderWindow& window)
 			}
 		}
 
-		window.draw(&lines[0], lines.size(), sf::Lines);
+		if (lines.size() > 0)
+		{
+			window.draw(&lines[0], lines.size(), sf::Lines);
+		}
 	}
 }
 
@@ -129,6 +173,9 @@ void CNetwork::CreateFirefly()
 {
 	CFirefly firefly(m_fireflies.size() + 1);
 	firefly.Init(75.0f, 75.0f); // default position, top left corner
+
+	float blinkingRate = MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
+	firefly.SetBlinkingRate(blinkingRate);
 
 	m_fireflies.push_back(firefly);
 }

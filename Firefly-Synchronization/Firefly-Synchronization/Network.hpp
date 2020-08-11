@@ -29,6 +29,7 @@ public:
 private:
 	std::vector<CFirefly> m_fireflies;
 
+	void HandlePulses();
 	void ShowLines(sf::RenderWindow& window);
 };
 

@@ -38,6 +38,9 @@ public:
 	void SetBlinkingRate(const float& blinkingRate);
 	float GetBlinkingRate() const;
 
+	void SetHasEmittedPulse(const bool& hasEmittedPulse);
+	bool GetHasEmittedPulse() const;
+
 	void ResetBlinking();
 
 private:
@@ -59,6 +62,8 @@ private:
 	bool m_selected = false;
 
 	sf::Clock m_clock;
+	
+	bool m_hasEmittedPulse = false;
 
 	void BlinkEffect();
 };

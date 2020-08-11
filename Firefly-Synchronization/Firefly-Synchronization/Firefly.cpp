@@ -149,6 +149,8 @@ void CFirefly::BlinkEffect()
 		m_firefly.setOutlineColor(sf::Color::Black);
 		m_center.setFillColor(sf::Color::Black);
 
+		m_hasEmittedPulse = true;
+
 		// Back to original color
 		if (time > m_blinkingRate + BLINKING_DURATION)
 		{
@@ -156,6 +158,8 @@ void CFirefly::BlinkEffect()
 			sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
 			m_firefly.setOutlineColor(decoColor);
 			m_center.setFillColor(decoColor);
+			
+			m_hasEmittedPulse = false;
 
 			m_clock.restart();
 		}
@@ -299,6 +303,16 @@ void CFirefly::SetBlinkingRate(const float& blinkingRate)
 float CFirefly::GetBlinkingRate() const
 {
 	return m_blinkingRate;
+}
+
+void CFirefly::SetHasEmittedPulse(const bool& hasEmittedPulse)
+{
+	m_hasEmittedPulse = hasEmittedPulse;
+}
+
+bool CFirefly::GetHasEmittedPulse() const
+{
+	return m_hasEmittedPulse;
 }
 
 void CFirefly::ResetBlinking()
