@@ -40,8 +40,8 @@ void CNetwork::Scan()
 	{
 		for (int i = 0; i < m_fireflies.size(); i++)
 		{
-			// Distance to other fireflies
 			std::vector<std::pair<int, float>> distancesToOtherFireflies;
+			std::vector<int> neighbours;
 			for (int j = 0; j < m_fireflies.size(); j++)
 			{
 				if (m_fireflies[i].GetId() != m_fireflies[j].GetId())
@@ -51,9 +51,18 @@ void CNetwork::Scan()
 						(powf((m_fireflies[i].GetPosition().y - m_fireflies[j].GetPosition().y), 2))
 					);
 
+					// Distance to other fireflies
 					distancesToOtherFireflies.push_back(std::make_pair(m_fireflies[j].GetId(), distance));
+
+					// Calculate neighbours (inside the influence radius)
+					if (distance <= m_fireflies[i].GetInfluenceRadius())
+					{
+						neighbours.push_back(m_fireflies[j].GetId());
+					}
 				}
 			}
+
+			m_fireflies[i].SetNeighbours(neighbours);
 
 			// Calculate closest firefly
 			int closestFirefly = -1;
@@ -68,23 +77,6 @@ void CNetwork::Scan()
 			}
 
 			m_fireflies[i].SetClosestFirefly(closestFirefly);
-
-			// Calculate neighbours (inside the influence radius)
-			std::vector<int> neighbours;
-
-			for (int j = 0; j < distancesToOtherFireflies.size(); j++)
-			{
-				// TODO:
-				// m_fireflies[i].GetInfluenceRadius() does the job for now,
-				// because all influence radii are the same.
-				// I should loop all the rest of the fireflies here as well
-				if (distancesToOtherFireflies[j].second <= m_fireflies[i].GetInfluenceRadius())
-				{
-					neighbours.push_back(distancesToOtherFireflies[j].first);
-				}
-			}
-
-			m_fireflies[i].SetNeighbours(neighbours);
 		}
 	}
 }
