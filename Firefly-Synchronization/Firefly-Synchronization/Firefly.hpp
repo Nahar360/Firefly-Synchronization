@@ -11,6 +11,8 @@ public:
 	void Init(float posX = 0.0f, float posY = 0.0f);
 	void SetVertices(sf::Vector2f center);
 	void Update(sf::RenderWindow& window);
+	void RunPhaseFunction();
+	bool HasBlinked();
 	void UpdatePosition(float x, float y);
 	void UpdateRotation();
 	void UpdateColor(sf::Color color);
@@ -38,8 +40,13 @@ public:
 	void SetBlinkingRate(const float& blinkingRate);
 	float GetBlinkingRate() const;
 
-	void SetHasEmittedPulse(const bool& hasEmittedPulse);
-	bool GetHasEmittedPulse() const;
+	float GetElapsedTimeAsSeconds() const;
+
+	void SetUrgeToBlink(const float& urgeToBlink);
+	float GetUrgeToBlink() const;
+
+	void SetPhase(const float& phase);
+	float GetPhase() const;
 
 	void ResetBlinking();
 
@@ -62,8 +69,10 @@ private:
 	bool m_selected = false;
 
 	sf::Clock m_clock;
-	
-	bool m_hasEmittedPulse = false;
+	float m_previousTime = 0.0f;
+	float m_currentTime = 0.0f;
 
-	void BlinkEffect();
+	float m_urgeToBlink = 0.0f;
+
+	float m_phase = 0.0f;
 };

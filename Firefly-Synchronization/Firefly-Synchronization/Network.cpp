@@ -15,7 +15,7 @@ void CNetwork::Init()
 		CFirefly firefly(i + 1);
 		firefly.Init();
 
-		float blinkingRate = MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
+		float blinkingRate = 2.2f; // MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
 		firefly.SetBlinkingRate(blinkingRate);
 
 		m_fireflies.push_back(firefly);
@@ -29,11 +29,63 @@ void CNetwork::Update(sf::RenderWindow& window)
 	for (int i = 0; i < m_fireflies.size(); i++)
 	{
 		m_fireflies[i].Update(window);
+		
+		m_fireflies[i].RunPhaseFunction();
+
+		if (m_fireflies[i].HasBlinked())
+		{
+			std::cout << "Firefly " << GetFirefly(i + 1).GetId() << " has blinked." << std::endl;
+			auto fireflyThatHasBlinked = GetFirefly(i + 1);
+			TransmitPulse(fireflyThatHasBlinked);
+		}
 	}
 
-	// HandlePulses();
-
 	ShowLines(window);
+}
+
+void CNetwork::TransmitPulse(CFirefly& firefly)
+{
+	std::cout << "Transmitting pulse of firefly " << firefly.GetId() << " to: " << std::endl;
+
+	// Get neighbours of firefly that has blinked
+	std::vector<int> neighbours = firefly.GetNeighbours();
+	for (int i = 0; i < neighbours.size(); i++)
+	{
+		std::cout << "Neighbour " << GetFirefly(neighbours[i]).GetId() << std::endl;
+		auto neighbour = GetFirefly(neighbours[i]);
+
+		float phase = neighbour.GetPhase();
+
+		const float bDissipationFactor = BLINKING_DURATION;
+		const float eAmplitudeIncrement = 0.1f;
+		float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
+		float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
+		float phaseRespondCurve = 1;
+		if (alpha * phase + beta < 1)
+		{
+			phaseRespondCurve = alpha * phase + beta;
+		}
+		float deltaPhase = phaseRespondCurve;
+		phase += deltaPhase;
+
+		std::cout << "New phase: " << phase << std::endl;
+
+		// TODO:
+		// This does not work
+		// but it should!!
+		// neighbour.SetPhase(phase);
+
+		// Quick fix for this last thing...
+		for (int j = 0; j < m_fireflies.size(); j++)
+		{
+			if (j + 1 == neighbour.GetId())
+			{
+				m_fireflies[j].SetUrgeToBlink(phase + phase * 0.1f);
+			}
+		}
+	}
+
+	std::cout << std::endl << std::endl;
 }
 
 void CNetwork::Scan()
@@ -79,41 +131,6 @@ void CNetwork::Scan()
 			}
 
 			m_fireflies[i].SetClosestFirefly(closestFirefly);
-		}
-	}
-}
-
-void CNetwork::HandlePulses()
-{
-	if (m_fireflies.size() > 1)
-	{
-		for (int i = 0; i < m_fireflies.size(); i++)
-		{
-			std::vector<int> neighbours = m_fireflies[i].GetNeighbours();
-			for (int j = 0; j < neighbours.size(); j++)
-			{
-				CFirefly otherFirefly = GetFirefly(neighbours[j]);
-				// Check if neighbour has emitted a pulse
-				if (otherFirefly.GetHasEmittedPulse())
-				{
-					otherFirefly.SetHasEmittedPulse(false);
-
-					float phase = m_fireflies[i].GetBlinkingRate();
-					float bDissipationFactor = BLINKING_DURATION;
-					float eAmplitudeIncrement = 0.1f;
-					float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
-					float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
-					float phaseRespondCurve = 1;
-					if (alpha * phase + beta < 1)
-					{
-						phaseRespondCurve = alpha * phase + beta;
-					}
-					float deltaPhase = phaseRespondCurve;
-					phase += deltaPhase;
-
-					m_fireflies[i].SetBlinkingRate(phase);
-				}
-			}
 		}
 	}
 }
@@ -170,7 +187,7 @@ void CNetwork::CreateFirefly()
 	CFirefly firefly(m_fireflies.size() + 1);
 	firefly.Init(75.0f, 75.0f); // default position, top left corner
 
-	float blinkingRate = MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
+	float blinkingRate = 1.0f; // MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
 	firefly.SetBlinkingRate(blinkingRate);
 
 	m_fireflies.push_back(firefly);

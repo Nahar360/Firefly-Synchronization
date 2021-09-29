@@ -135,35 +135,43 @@ void CFirefly::Update(sf::RenderWindow& window)
 
 	m_idText.setFont(m_font);
 	window.draw(m_idText);
-
-	BlinkEffect();
 }
 
-void CFirefly::BlinkEffect()
+void CFirefly::RunPhaseFunction()
 {
-	float time = m_clock.getElapsedTime().asSeconds();
-	if (time > m_blinkingRate)
+	float m_currentTime = m_clock.getElapsedTime().asSeconds();
+	m_phase += m_currentTime - m_previousTime;
+	m_previousTime = m_currentTime;
+}
+
+bool CFirefly::HasBlinked()
+{
+	if (m_phase > m_blinkingRate)
 	{
 		// Blink
 		m_firefly.setFillColor(sf::Color::Yellow);
 		m_firefly.setOutlineColor(sf::Color::Black);
 		m_center.setFillColor(sf::Color::Black);
 
-		m_hasEmittedPulse = true;
-
 		// Back to original color
-		if (time > m_blinkingRate + BLINKING_DURATION)
+		if (m_phase > m_blinkingRate + BLINKING_DURATION)
 		{
 			m_firefly.setFillColor(m_originalColor);
 			sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
 			m_firefly.setOutlineColor(decoColor);
 			m_center.setFillColor(decoColor);
 			
-			m_hasEmittedPulse = false;
+			m_phase = 0.0f;
+			// m_clock.restart();
 
-			m_clock.restart();
+			// TODO:
+			// The "return true;" here will unnecessarily sum the BLINKING_DURATION as well
+			// that we are not interested about
+			return true;
 		}
 	}
+
+	return false;
 }
 
 void CFirefly::UpdatePosition(float x, float y)
@@ -305,14 +313,29 @@ float CFirefly::GetBlinkingRate() const
 	return m_blinkingRate;
 }
 
-void CFirefly::SetHasEmittedPulse(const bool& hasEmittedPulse)
+float CFirefly::GetElapsedTimeAsSeconds() const
 {
-	m_hasEmittedPulse = hasEmittedPulse;
+	return m_clock.getElapsedTime().asSeconds();
 }
 
-bool CFirefly::GetHasEmittedPulse() const
+void CFirefly::SetUrgeToBlink(const float& urgeToBlink)
 {
-	return m_hasEmittedPulse;
+	m_urgeToBlink = urgeToBlink;
+}
+
+float CFirefly::GetUrgeToBlink() const
+{
+	return m_urgeToBlink;
+}
+
+void CFirefly::SetPhase(const float& phase)
+{
+	m_phase = phase;
+}
+
+float CFirefly::GetPhase() const
+{
+	return m_phase;
 }
 
 void CFirefly::ResetBlinking()

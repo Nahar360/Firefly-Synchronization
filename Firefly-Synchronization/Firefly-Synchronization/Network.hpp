@@ -30,7 +30,7 @@ public:
 private:
 	std::vector<CFirefly> m_fireflies;
 
-	void HandlePulses();
+	void TransmitPulse(CFirefly& firefly);
 	void ShowLines(sf::RenderWindow& window);
 };
 

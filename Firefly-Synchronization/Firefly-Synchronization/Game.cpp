@@ -12,6 +12,11 @@ void CGame::Run()
 {
 	m_uiManager.Init(m_window);
 
+	sf::Clock clock = sf::Clock::Clock();
+	sf::Time previousTime = clock.getElapsedTime();
+	sf::Time currentTime;
+	float fps;
+
 	while (m_window.isOpen())
 	{
 		CheckEvents();
@@ -25,6 +30,10 @@ void CGame::Run()
 		m_uiManager.Render(m_window);
 
 		m_window.display();
+
+		currentTime = clock.getElapsedTime();
+		float fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
+		previousTime = currentTime;
 	}
 
 	m_uiManager.Shutdown();

@@ -143,10 +143,13 @@ void CUiManager::InitialiseNetwork(CNetwork& network)
 
 	ImGui::InputFloat("Max. blinking rate", &MAX_BLINKING_RATE, 0.001f, 0.001f, "%.2f");
 
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.4f, 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
 	if (ImGui::Button("Initialise network"))
 	{
 		network.Init();
 	}
+	ImGui::PopStyleColor(2);
 }
 
 void CUiManager::UpdateBackgroundColor()
@@ -189,40 +192,53 @@ void CUiManager::UpdateBlinkingDuration(CNetwork& network)
 
 void CUiManager::ResetBlinkingClock(CNetwork& network)
 {
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.1f, 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.1f, 0.1f, 1.0f));
 	if (ImGui::Button("Reset blinking"))
 	{
 		network.ResetBlinkingClock();
 	}
+	ImGui::PopStyleColor(2);
 }
 
 void CUiManager::CreateFirefly(CNetwork& network)
 {
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.4f, 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
 	if (ImGui::Button("Create firefly"))
 	{
 		network.CreateFirefly();
 	}
+	ImGui::PopStyleColor(2);
 }
 
 void CUiManager::DeleteFirefly(CNetwork& network)
 {
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.1f, 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.1f, 0.1f, 1.0f));
 	if (ImGui::Button("Delete firefly"))
 	{
 		network.DeleteFirefly();
 	}
+	ImGui::PopStyleColor(2);
 }
 
 void CUiManager::ClearFireflies(CNetwork& network)
 {
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.1f, 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.1f, 0.1f, 1.0f));
 	if (ImGui::Button("Clear fireflies"))
 	{
 		network.ClearFireflies();
 	}
+	ImGui::PopStyleColor(2);
 }
 
 void CUiManager::ListFireflies(CNetwork& network)
 {
 	auto fireflies = network.GetFireflies();
 
+	// Fireflies information
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Fireflies:");
 	ImGui::BeginChild("Scrolling");
 	for (int i = 0; i < fireflies.size(); i++)
@@ -278,6 +294,30 @@ void CUiManager::ListFireflies(CNetwork& network)
 			}
 			ImGui::Text("]");
 		}
+
+		// Phase real time plot
+		// TODO: only works right for 1 firefly
+		// I need to get rid off these static variables to make it work with multiple ones
+		static float values[500] = {};
+		static int values_offset = 0;
+		static double refreshTime = 0.0;
+		if (refreshTime == 0.0)
+		{
+			refreshTime = ImGui::GetTime();
+		}
+
+		while (refreshTime < ImGui::GetTime())
+		{
+			values[values_offset] = fireflies[i].GetPhase();
+			values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
+			refreshTime += 1.0f / 60.0f; // data at fixed 60 Hz rate
+		}
+
+		char overlay[32];
+		sprintf_s(overlay, "phase %0.1f", fireflies[i].GetPhase());
+		ImGui::PlotLines("", values, IM_ARRAYSIZE(values), values_offset, overlay, 0.0f, fireflies[i].GetBlinkingRate(), ImVec2(250.0f, 50.0f));
+
+		ImGui::Separator();
 	}
 	ImGui::EndChild();
 }
