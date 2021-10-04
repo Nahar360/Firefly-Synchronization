@@ -234,7 +234,7 @@ void CNetwork::UnselectAllFireflies()
 	}
 }
 
-CFirefly CNetwork::GetFirefly(const int& id) const
+CFirefly& CNetwork::GetFirefly(const int& id)
 {
 	return m_fireflies[id - 1];
 }
