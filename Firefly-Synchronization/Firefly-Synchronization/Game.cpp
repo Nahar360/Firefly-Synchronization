@@ -19,9 +19,13 @@ void CGame::Run()
 
 	while (m_window.isOpen())
 	{
+		currentTime = clock.getElapsedTime();
+		float fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
+		previousTime = currentTime;
+
 		CheckEvents();
 
-		m_uiManager.Run(m_window, m_network);
+		m_uiManager.Run(m_window, m_network, fps);
 
 		m_window.clear(BACKGROUND_COLOR);
 
@@ -30,10 +34,6 @@ void CGame::Run()
 		m_uiManager.Render(m_window);
 
 		m_window.display();
-
-		currentTime = clock.getElapsedTime();
-		float fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
-		previousTime = currentTime;
 	}
 
 	m_uiManager.Shutdown();

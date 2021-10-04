@@ -35,22 +35,24 @@ void CUiManager::Begin()
 	ImGui::Begin("Menu");
 }
 
-void CUiManager::Run(sf::RenderWindow& window, CNetwork& network)
+void CUiManager::Run(sf::RenderWindow& window, CNetwork& network, float fps)
 {
 	Update(window);
 
 	Begin();
 
-	HandleUi(window, network);
+	HandleUi(window, network, fps);
 
 	End();
 }
 
-void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network)
+void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network, float fps)
 {
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "General settings");
 
 	UpdateWindowTitle(window);
+
+	ShowFPS(fps);
 
 	UpdateMousePosition(window);
 
@@ -115,6 +117,11 @@ void CUiManager::UpdateWindowTitle(sf::RenderWindow& window)
 	{
 		window.setTitle(WINDOW_TITLE);
 	}
+}
+
+void CUiManager::ShowFPS(float fps)
+{
+	ImGui::Text("FPS: %f", fps);
 }
 
 void CUiManager::UpdateMousePosition(sf::RenderWindow& window)

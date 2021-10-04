@@ -15,7 +15,7 @@ public:
 
 	void ProcessEvent(sf::Event event);
 
-	void Run(sf::RenderWindow& window, CNetwork& network);
+	void Run(sf::RenderWindow& window, CNetwork& network, float fps);
 	void Render(sf::RenderWindow& window);
 
 private:
@@ -23,10 +23,11 @@ private:
 
 	void Update(sf::RenderWindow& window);
 	void Begin();
-	void HandleUi(sf::RenderWindow& window, CNetwork& network);
+	void HandleUi(sf::RenderWindow& window, CNetwork& network, float fps);
 	void End();
 
 	void UpdateWindowTitle(sf::RenderWindow& window);
+	void ShowFPS(float fps);
 	void UpdateMousePosition(sf::RenderWindow& window);
 	void InitialiseNetwork(CNetwork& network);
 	void UpdateBackgroundColor();
