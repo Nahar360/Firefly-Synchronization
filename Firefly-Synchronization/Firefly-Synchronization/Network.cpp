@@ -15,7 +15,7 @@ void CNetwork::Init()
 		CFirefly firefly(i + 1);
 		firefly.Init();
 
-		float blinkingRate = 2.2f; // MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
+		const float blinkingRate = MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE))); // 2.2f
 		firefly.SetBlinkingRate(blinkingRate);
 
 		m_fireflies.push_back(firefly);
@@ -29,7 +29,7 @@ void CNetwork::Update(sf::RenderWindow& window)
 	for (int i = 0; i < m_fireflies.size(); i++)
 	{
 		m_fireflies[i].Draw(window);
-		
+
 		m_fireflies[i].RunPhaseFunction();
 
 		if (m_fireflies[i].HasBlinked())

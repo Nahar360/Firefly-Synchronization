@@ -33,7 +33,7 @@ void CFirefly::Init(float posX, float posY)
 			col -= 5;
 			row++;
 		}
-		m_firefly.setPosition(125 * col, 125 * row);
+		m_firefly.setPosition(250 * col, 125 * row);
 	}
 	else
 	{
@@ -160,7 +160,7 @@ bool CFirefly::HasBlinked()
 			sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
 			m_firefly.setOutlineColor(decoColor);
 			m_center.setFillColor(decoColor);
-			
+
 			m_phase = 0.0f;
 			// m_clock.restart();
 
@@ -295,7 +295,7 @@ float CFirefly::GetInfluenceRadius() const
 	return m_influenceRadius.getRadius();
 }
 
-void CFirefly::SetClosestFirefly(const int& closestFirefly)
+void CFirefly::SetClosestFirefly(const int closestFirefly)
 {
 	m_closestFirefly = closestFirefly;
 }
@@ -315,7 +315,7 @@ std::vector<int> CFirefly::GetNeighbours() const
 	return m_neighbours;
 }
 
-void CFirefly::SetSelected(const bool& selected)
+void CFirefly::SetSelected(const bool selected)
 {
 	m_selected = selected;
 }
@@ -325,7 +325,7 @@ bool CFirefly::GetSelected() const
 	return m_selected;
 }
 
-void CFirefly::SetBlinkingRate(const float& blinkingRate)
+void CFirefly::SetBlinkingRate(const float blinkingRate)
 {
 	m_blinkingRate = blinkingRate;
 
@@ -342,7 +342,7 @@ float CFirefly::GetElapsedTimeAsSeconds() const
 	return m_clock.getElapsedTime().asSeconds();
 }
 
-void CFirefly::SetUrgeToBlink(const float& urgeToBlink)
+void CFirefly::SetUrgeToBlink(const float urgeToBlink)
 {
 	m_urgeToBlink = urgeToBlink;
 }
@@ -352,7 +352,7 @@ float CFirefly::GetUrgeToBlink() const
 	return m_urgeToBlink;
 }
 
-void CFirefly::SetPhase(const float& phase)
+void CFirefly::SetPhase(const float phase)
 {
 	m_phase = phase;
 }

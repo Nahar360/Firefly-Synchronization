@@ -28,24 +28,24 @@ public:
 
 	float GetInfluenceRadius() const;
 
-	void SetClosestFirefly(const int& closestFirefly);
+	void SetClosestFirefly(const int closestFirefly);
 	int GetClosestFirefly() const;
 
 	void SetNeighbours(const std::vector<int>& neighbours);
 	std::vector<int> GetNeighbours() const;
 
-	void SetSelected(const bool& selected);
+	void SetSelected(const bool selected);
 	bool GetSelected() const;
 
-	void SetBlinkingRate(const float& blinkingRate);
+	void SetBlinkingRate(const float blinkingRate);
 	float GetBlinkingRate() const;
 
 	float GetElapsedTimeAsSeconds() const;
 
-	void SetUrgeToBlink(const float& urgeToBlink);
+	void SetUrgeToBlink(const float urgeToBlink);
 	float GetUrgeToBlink() const;
 
-	void SetPhase(const float& phase);
+	void SetPhase(const float phase);
 	float GetPhase() const;
 
 	void ResetBlinking();
