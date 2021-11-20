@@ -115,7 +115,7 @@ void CFirefly::SetVertices(sf::Vector2f center)
 	m_vertices[5].setOrigin(m_vertices[5].getRadius(), m_vertices[5].getRadius());
 }
 
-void CFirefly::Update(sf::RenderWindow& window)
+void CFirefly::Draw(sf::RenderWindow& window)
 {
 	window.draw(m_firefly);
 	window.draw(m_center);

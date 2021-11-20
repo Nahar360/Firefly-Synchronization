@@ -10,7 +10,7 @@ public:
 
 	void Init(float posX = 0.0f, float posY = 0.0f);
 	void SetVertices(sf::Vector2f center);
-	void Update(sf::RenderWindow& window);
+	void Draw(sf::RenderWindow& window);
 	void RunPhaseFunction();
 	bool HasBlinked();
 	void UpdatePosition(float x, float y);

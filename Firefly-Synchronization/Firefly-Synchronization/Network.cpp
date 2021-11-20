@@ -28,7 +28,7 @@ void CNetwork::Update(sf::RenderWindow& window)
 
 	for (int i = 0; i < m_fireflies.size(); i++)
 	{
-		m_fireflies[i].Update(window);
+		m_fireflies[i].Draw(window);
 		
 		m_fireflies[i].RunPhaseFunction();
 
