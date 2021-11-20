@@ -205,7 +205,7 @@ void CNetwork::CreateFirefly()
 	CFirefly firefly(m_fireflies.size() + 1);
 	firefly.Init(75.0f, 75.0f); // default position, top left corner
 
-	float blinkingRate = 1.0f; // MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE)));
+	float blinkingRate = MIN_BLINKING_RATE + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE))); // 1.0f
 	firefly.SetBlinkingRate(blinkingRate);
 
 	m_fireflies.push_back(firefly);
