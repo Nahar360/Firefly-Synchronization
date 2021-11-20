@@ -50,6 +50,12 @@ public:
 
 	void ResetBlinking();
 
+	std::vector<float> m_phasesToPlot = std::vector<float>(500);
+	int m_phasesOffset = 0;
+
+	std::vector<float> GetPhasesToPlot() const { return m_phasesToPlot; }
+	int GetPhasesOffset() const { return m_phasesOffset; }
+
 private:
 	sf::CircleShape m_firefly;
 	sf::CircleShape m_center;

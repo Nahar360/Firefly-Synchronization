@@ -146,6 +146,9 @@ void CFirefly::RunPhaseFunction()
 	float m_currentTime = m_clock.getElapsedTime().asSeconds();
 	m_phase += m_currentTime - m_previousTime;
 	m_previousTime = m_currentTime;
+
+	m_phasesToPlot[m_phasesOffset] = m_phase;
+	m_phasesOffset = (m_phasesOffset + 1) % m_phasesToPlot.size();
 }
 
 bool CFirefly::HasBlinked()

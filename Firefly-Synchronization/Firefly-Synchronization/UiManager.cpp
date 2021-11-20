@@ -243,24 +243,25 @@ void CUiManager::ClearFireflies(CNetwork& network)
 
 void CUiManager::ListFireflies(CNetwork& network)
 {
-	auto fireflies = network.GetFireflies();
+	const std::vector<CFirefly> fireflies = network.GetFireflies();
 
 	// Fireflies information
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Fireflies:");
 	ImGui::BeginChild("Scrolling");
 	for (size_t i = 0; i < fireflies.size(); i++)
 	{
-		if (fireflies[i].GetSelected())
+		const CFirefly firefly = fireflies[i];
+		if (firefly.GetSelected())
 		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 1),
 				"---> [%d] - Blink. rate: %0.1f s. Closest: [%d].",
-				fireflies[i].GetId(), fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
+				firefly.GetId(), firefly.GetBlinkingRate(), firefly.GetClosestFirefly());
 
 			ImGui::SameLine();
 
 			ImGui::TextColored(ImVec4(0, 1, 0, 1), "Neighbours: [");
 			ImGui::SameLine();
-			std::vector<int> neighbours = fireflies[i].GetNeighbours();
+			std::vector<int> neighbours = firefly.GetNeighbours();
 			for (size_t j = 0; j < neighbours.size(); j++)
 			{
 				if (j != neighbours.size() - 1)
@@ -279,13 +280,13 @@ void CUiManager::ListFireflies(CNetwork& network)
 		else
 		{
 			ImGui::Text("[%d] - Blink. rate: %0.1f s. Closest: [%d].",
-				fireflies[i].GetId(), fireflies[i].GetBlinkingRate(), fireflies[i].GetClosestFirefly());
+				firefly.GetId(), firefly.GetBlinkingRate(), firefly.GetClosestFirefly());
 
 			ImGui::SameLine();
 
 			ImGui::Text("Neighbours: [");
 			ImGui::SameLine();
-			std::vector<int> neighbours = fireflies[i].GetNeighbours();
+			std::vector<int> neighbours = firefly.GetNeighbours();
 			for (size_t j = 0; j < neighbours.size(); j++)
 			{
 				if (j != neighbours.size() - 1)
@@ -303,26 +304,18 @@ void CUiManager::ListFireflies(CNetwork& network)
 		}
 
 		// Phase real time plot
-		// TODO: only works right for 1 firefly
-		// I need to get rid off these static variables to make it work with multiple ones
-		static float values[500] = {};
-		static int values_offset = 0;
-		static double refreshTime = 0.0;
-		if (refreshTime == 0.0)
-		{
-			refreshTime = ImGui::GetTime();
-		}
-
-		while (refreshTime < ImGui::GetTime())
-		{
-			values[values_offset] = fireflies[i].GetPhase();
-			values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
-			refreshTime += 1.0f / 60.0f; // data at fixed 60 Hz rate
-		}
-
 		char overlay[32];
-		sprintf_s(overlay, "phase %0.1f", fireflies[i].GetPhase());
-		ImGui::PlotLines("", values, IM_ARRAYSIZE(values), values_offset, overlay, 0.0f, fireflies[i].GetBlinkingRate(), ImVec2(250.0f, 50.0f));
+		sprintf_s(overlay, "phase %0.1f", firefly.GetPhase());
+		ImGui::PlotLines(
+			"",
+			firefly.GetPhasesToPlot().data(),
+			firefly.GetPhasesToPlot().size(),
+			firefly.GetPhasesOffset(),
+			overlay,
+			0.0f,
+			firefly.GetBlinkingRate(),
+			ImVec2(250.0f, 50.0f)
+		);
 
 		ImGui::Separator();
 	}
