@@ -174,6 +174,30 @@ bool CFirefly::HasBlinked()
 	return false;
 }
 
+// Alex's HasBlinked
+/*bool CFirefly::HasBlinked()
+{
+	if (m_phase > m_blinkingRate - BLINKING_DURATION)
+	{
+		m_firefly.setFillColor(sf::Color::Yellow);
+		m_firefly.setOutlineColor(sf::Color::Black);
+		m_center.setFillColor(sf::Color::Black);
+
+		if (m_phase > m_blinkingRate)
+		{
+			m_firefly.setFillColor(m_originalColor);
+			sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
+			m_firefly.setOutlineColor(decoColor);
+			m_center.setFillColor(decoColor);
+
+			m_phase = m_blinkingRate - m_phase;
+			return false;
+		}
+		return true;
+	}
+	return false;
+}*/
+
 void CFirefly::UpdatePosition(float x, float y)
 {
 	// Boundaries detection

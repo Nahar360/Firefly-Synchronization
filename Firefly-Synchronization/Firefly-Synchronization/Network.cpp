@@ -88,6 +88,24 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
 	std::cout << std::endl << std::endl;
 }
 
+// Alex's TransmitPulse
+/*void CNetwork::TransmitPulse(CFirefly& firefly)
+{
+	std::vector<int> neighbours = firefly.GetNeighbours();
+
+	for (int i = 0; i < neighbours.size(); i++)
+	{
+		CFirefly& neighbour = GetFirefly(neighbours[i]);
+		float		phase = neighbour.GetPhase();
+
+		phase += 0.01f;
+		phase = std::min(phase, firefly.GetBlinkingRate());
+		neighbour.SetPhase(phase);
+	}
+
+	std::cout << std::endl << std::endl;
+}*/
+
 void CNetwork::Scan()
 {
 	if (m_fireflies.size() > 1)
