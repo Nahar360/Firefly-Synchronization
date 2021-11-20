@@ -92,11 +92,10 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
 /*void CNetwork::TransmitPulse(CFirefly& firefly)
 {
 	std::vector<int> neighbours = firefly.GetNeighbours();
-
-	for (int i = 0; i < neighbours.size(); i++)
+	for (size_t i = 0; i < neighbours.size(); i++)
 	{
 		CFirefly& neighbour = GetFirefly(neighbours[i]);
-		float		phase = neighbour.GetPhase();
+		float phase = neighbour.GetPhase();
 
 		phase += 0.01f;
 		phase = std::min(phase, firefly.GetBlinkingRate());
