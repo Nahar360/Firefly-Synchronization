@@ -15,7 +15,6 @@ void CGame::Run()
 	sf::Clock clock = sf::Clock::Clock();
 	sf::Time previousTime = clock.getElapsedTime();
 	sf::Time currentTime;
-	float fps;
 
 	while (m_window.isOpen())
 	{

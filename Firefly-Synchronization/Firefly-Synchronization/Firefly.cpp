@@ -22,7 +22,11 @@ void CFirefly::Init(float posX, float posY)
 	m_firefly.setFillColor(m_originalColor);
 
 	m_firefly.setOutlineThickness(2.5f);
-	sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
+	sf::Color decoColor = sf::Color(
+		static_cast<sf::Uint8>(m_firefly.getFillColor().r * 0.5),
+		static_cast<sf::Uint8>(m_firefly.getFillColor().g * 0.5),
+		static_cast<sf::Uint8>(m_firefly.getFillColor().b * 0.5)
+	);
 	m_firefly.setOutlineColor(decoColor);
 	if (posX == 0.0f && posY == 0.0f)
 	{
@@ -33,7 +37,7 @@ void CFirefly::Init(float posX, float posY)
 			col -= 5;
 			row++;
 		}
-		m_firefly.setPosition(250 * col, 125 * row);
+		m_firefly.setPosition(250.0f * col, 125.0f * row);
 	}
 	else
 	{
@@ -49,7 +53,7 @@ void CFirefly::Init(float posX, float posY)
 	m_center.setOrigin(m_center.getRadius(), m_center.getRadius());
 
 	// Vertices
-	for (int i = 0; i < m_firefly.getPointCount(); i++)
+	for (size_t i = 0; i < m_firefly.getPointCount(); i++)
 	{
 		sf::CircleShape vertex;
 		vertex.setRadius(5.0f);
@@ -81,13 +85,13 @@ void CFirefly::SetVertices(sf::Vector2f center)
 	// TOP_LEFT
 	m_vertices[0].setPosition(
 		center.x - 1 * (m_firefly.getRadius() / 2),
-		center.y - (sqrt(3) * m_firefly.getRadius()) / 2);
+		center.y - (static_cast<float>(sqrt(3)) * m_firefly.getRadius()) / 2);
 	m_vertices[0].setOrigin(m_vertices[0].getRadius(), m_vertices[0].getRadius());
 
 	// TOP_RIGHT
 	m_vertices[1].setPosition(
 		center.x + 1 * (m_firefly.getRadius() / 2),
-		center.y - (sqrt(3) * m_firefly.getRadius()) / 2);
+		center.y - (static_cast<float>(sqrt(3)) * m_firefly.getRadius()) / 2);
 	m_vertices[1].setOrigin(m_vertices[1].getRadius(), m_vertices[1].getRadius());
 
 	// RIGHT
@@ -99,13 +103,13 @@ void CFirefly::SetVertices(sf::Vector2f center)
 	// BOTTOM_RIGHT
 	m_vertices[3].setPosition(
 		center.x + 1 * (m_firefly.getRadius() / 2),
-		center.y + 1 * (sqrt(3) * m_firefly.getRadius()) / 2);
+		center.y + 1 * (static_cast<float>(sqrt(3)) * m_firefly.getRadius()) / 2);
 	m_vertices[3].setOrigin(m_vertices[3].getRadius(), m_vertices[3].getRadius());
 
 	// BOTTOM_LEFT
 	m_vertices[4].setPosition(
 		center.x - 1 * (m_firefly.getRadius() / 2),
-		center.y + 1 * (sqrt(3) * m_firefly.getRadius()) / 2);
+		center.y + 1 * (static_cast<float>(sqrt(3)) * m_firefly.getRadius()) / 2);
 	m_vertices[4].setOrigin(m_vertices[4].getRadius(), m_vertices[4].getRadius());
 
 	// LEFT
@@ -122,7 +126,7 @@ void CFirefly::Draw(sf::RenderWindow& window)
 
 	if (m_selected)
 	{
-		for (int i = 0; i < m_vertices.size(); i++)
+		for (size_t i = 0; i < m_vertices.size(); i++)
 		{
 			window.draw(m_vertices[i]);
 		}
@@ -157,7 +161,11 @@ bool CFirefly::HasBlinked()
 		if (m_phase > m_blinkingRate + BLINKING_DURATION)
 		{
 			m_firefly.setFillColor(m_originalColor);
-			sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
+			sf::Color decoColor = sf::Color(
+				static_cast<sf::Uint8>(m_firefly.getFillColor().r * 0.5),
+				static_cast<sf::Uint8>(m_firefly.getFillColor().g * 0.5),
+				static_cast<sf::Uint8>(m_firefly.getFillColor().b * 0.5)
+			);
 			m_firefly.setOutlineColor(decoColor);
 			m_center.setFillColor(decoColor);
 
@@ -220,7 +228,7 @@ void CFirefly::UpdateRotation()
 {
 	m_firefly.rotate(0.2f);
 
-	for (int i = 0; i < m_vertices.size(); i++)
+	for (size_t i = 0; i < m_vertices.size(); i++)
 	{
 		m_vertices[i].rotate(0.2f);
 	}
@@ -232,11 +240,15 @@ void CFirefly::UpdateColor(sf::Color color)
 
 	m_firefly.setFillColor(m_originalColor);
 
-	sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g * 0.5, m_firefly.getFillColor().b * 0.5);
+	sf::Color decoColor = sf::Color(
+		static_cast<sf::Uint8>(m_firefly.getFillColor().r * 0.5),
+		static_cast<sf::Uint8>(m_firefly.getFillColor().g * 0.5),
+		static_cast<sf::Uint8>(m_firefly.getFillColor().b * 0.5)
+	);
 	m_firefly.setOutlineColor(decoColor);
 	m_center.setFillColor(decoColor);
 
-	for (int i = 0; i < m_vertices.size(); i++)
+	for (size_t i = 0; i < m_vertices.size(); i++)
 	{
 		m_vertices[i].setFillColor(decoColor);
 	}
@@ -246,13 +258,14 @@ void CFirefly::UpdateColor(sf::Color color)
 
 bool CFirefly::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos)
 {
-	if (m_firefly.getGlobalBounds().contains(sf::Vector2f(mousePos.x, mousePos.y)))
+	sf::Vector2f mousePosFloat = sf::Vector2f(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+	if (m_firefly.getGlobalBounds().contains(mousePosFloat))
 	{
 		switch (mouseButton)
 		{
 		case sf::Mouse::Button::Left:
 		{
-			UpdatePosition(mousePos.x, mousePos.y);
+			UpdatePosition(mousePosFloat.x, mousePosFloat.y);
 
 			return true;
 		}

@@ -248,7 +248,7 @@ void CUiManager::ListFireflies(CNetwork& network)
 	// Fireflies information
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Fireflies:");
 	ImGui::BeginChild("Scrolling");
-	for (int i = 0; i < fireflies.size(); i++)
+	for (size_t i = 0; i < fireflies.size(); i++)
 	{
 		if (fireflies[i].GetSelected())
 		{
@@ -261,7 +261,7 @@ void CUiManager::ListFireflies(CNetwork& network)
 			ImGui::TextColored(ImVec4(0, 1, 0, 1), "Neighbours: [");
 			ImGui::SameLine();
 			std::vector<int> neighbours = fireflies[i].GetNeighbours();
-			for (int j = 0; j < neighbours.size(); j++)
+			for (size_t j = 0; j < neighbours.size(); j++)
 			{
 				if (j != neighbours.size() - 1)
 				{
@@ -286,7 +286,7 @@ void CUiManager::ListFireflies(CNetwork& network)
 			ImGui::Text("Neighbours: [");
 			ImGui::SameLine();
 			std::vector<int> neighbours = fireflies[i].GetNeighbours();
-			for (int j = 0; j < neighbours.size(); j++)
+			for (size_t j = 0; j < neighbours.size(); j++)
 			{
 				if (j != neighbours.size() - 1)
 				{

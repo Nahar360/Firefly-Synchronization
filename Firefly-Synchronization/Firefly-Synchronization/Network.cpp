@@ -26,7 +26,7 @@ void CNetwork::Update(sf::RenderWindow& window)
 {
 	Scan();
 
-	for (int i = 0; i < m_fireflies.size(); i++)
+	for (size_t i = 0; i < m_fireflies.size(); i++)
 	{
 		m_fireflies[i].Draw(window);
 
@@ -49,7 +49,7 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
 
 	// Get neighbours of firefly that has blinked
 	std::vector<int> neighbours = firefly.GetNeighbours();
-	for (int i = 0; i < neighbours.size(); i++)
+	for (size_t i = 0; i < neighbours.size(); i++)
 	{
 		std::cout << "Neighbour " << GetFirefly(neighbours[i]).GetId() << std::endl;
 		auto neighbour = GetFirefly(neighbours[i]);
@@ -76,7 +76,7 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
 		// neighbour.SetPhase(phase);
 
 		// Quick fix for this last thing...
-		for (int j = 0; j < m_fireflies.size(); j++)
+		for (size_t j = 0; j < m_fireflies.size(); j++)
 		{
 			if (j + 1 == neighbour.GetId())
 			{
@@ -110,11 +110,11 @@ void CNetwork::Scan()
 {
 	if (m_fireflies.size() > 1)
 	{
-		for (int i = 0; i < m_fireflies.size(); i++)
+		for (size_t i = 0; i < m_fireflies.size(); i++)
 		{
 			std::vector<std::pair<int, float>> distancesToOtherFireflies;
 			std::vector<int> neighbours;
-			for (int j = 0; j < m_fireflies.size(); j++)
+			for (size_t j = 0; j < m_fireflies.size(); j++)
 			{
 				if (m_fireflies[i].GetId() != m_fireflies[j].GetId())
 				{
@@ -139,7 +139,7 @@ void CNetwork::Scan()
 			// Calculate closest firefly
 			int closestFirefly = -1;
 			float minDistance = distancesToOtherFireflies[0].second;
-			for (int j = 0; j < distancesToOtherFireflies.size(); j++)
+			for (size_t j = 0; j < distancesToOtherFireflies.size(); j++)
 			{
 				if (distancesToOtherFireflies[j].second <= minDistance)
 				{
@@ -158,10 +158,10 @@ void CNetwork::ShowLines(sf::RenderWindow& window)
 	if (m_fireflies.size() > 1 && SHOW_LINES_OPTION != 0)
 	{
 		std::vector<sf::Vertex> lines;
-		for (int i = 0; i < m_fireflies.size(); i++)
+		for (size_t i = 0; i < m_fireflies.size(); i++)
 		{
 			std::vector<int> neighbours = m_fireflies[i].GetNeighbours();
-			for (int j = 1; j < m_fireflies.size(); j++)
+			for (size_t j = 1; j < m_fireflies.size(); j++)
 			{
 				const bool isNeighbour = (std::find(neighbours.begin(), neighbours.end(), m_fireflies[j].GetId()) != neighbours.end());
 				if (isNeighbour)
@@ -186,7 +186,7 @@ void CNetwork::ShowLines(sf::RenderWindow& window)
 
 void CNetwork::UpdateFirefliesColor(sf::Color color)
 {
-	for (int i = 0; i < m_fireflies.size(); i++)
+	for (size_t i = 0; i < m_fireflies.size(); i++)
 	{
 		m_fireflies[i].UpdateColor(color);
 	}
@@ -194,7 +194,7 @@ void CNetwork::UpdateFirefliesColor(sf::Color color)
 
 void CNetwork::ResetBlinkingClock()
 {
-	for (int i = 0; i < m_fireflies.size(); i++)
+	for (size_t i = 0; i < m_fireflies.size(); i++)
 	{
 		m_fireflies[i].ResetBlinking();
 	}
@@ -226,7 +226,7 @@ void CNetwork::ClearFireflies()
 
 void CNetwork::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos)
 {
-	for (int i = 0; i < m_fireflies.size(); i++)
+	for (size_t i = 0; i < m_fireflies.size(); i++)
 	{
 		if (m_fireflies[i].MouseDetection(mouseButton, mousePos))
 		{
@@ -243,7 +243,7 @@ void CNetwork::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mouseP
 
 void CNetwork::UnselectAllFireflies()
 {
-	for (int i = 0; i < m_fireflies.size(); i++)
+	for (size_t i = 0; i < m_fireflies.size(); i++)
 	{
 		if (m_fireflies[i].GetSelected())
 		{
