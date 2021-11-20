@@ -37,7 +37,7 @@ void CFirefly::Init(float posX, float posY)
 			col -= 5;
 			row++;
 		}
-		m_firefly.setPosition(250.0f * col, 125.0f * row);
+		m_firefly.setPosition(125.0f * col, 125.0f * row);
 	}
 	else
 	{
