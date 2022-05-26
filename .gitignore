@@ -1,7 +1,10 @@
-/Firefly-Synchronization/.vs
-/Firefly-Synchronization/Debug
-/Firefly-Synchronization/Release
+.vs
+Debug
+Release
+Firefly-Synchronization.sln
 /Firefly-Synchronization/Firefly-Synchronization/x64
 /Firefly-Synchronization/Firefly-Synchronization/Debug
 /Firefly-Synchronization/Firefly-Synchronization/Release
-/Firefly-Synchronization/Firefly-Synchronization/Firefly-Synchronization.vcxproj.user
+/Firefly-Synchronization/Firefly-Synchronization.vcxproj
+/Firefly-Synchronization/Firefly-Synchronization.vcxproj.filters
+/Firefly-Synchronization/Firefly-Synchronization.vcxproj.user
