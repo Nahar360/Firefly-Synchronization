@@ -11,5 +11,6 @@ Paper: [Article: Firefly Synchronization in Ad Hoc Networks](https://www.rlocman
 - Install SFML: `vcpkg.exe install SFML`
 - Install imgui: `vcpkg.exe install imgui`
 - Install imgui-SFML: `vcpkg.exe install imgui-SFML`
+- Make installed packages available user-wide: `vcpkg integrate install`
 - Clone repository
-- Run using Microsoft Visual Studio
+- Run using Microsoft Visual Studio 2022
